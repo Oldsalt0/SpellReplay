@@ -1,0 +1,7 @@
+## Interface: 20400
+## Title: SpellReplay
+## Author: Oldsalt (Smolderforge)
+## Notes: Displays the spells you just casted
+## DefaultState: disabled
+## SavedVariablesPerCharacter: replaySavedSettings
+SpellReplay.lua
