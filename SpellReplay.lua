@@ -172,8 +172,13 @@ SettingsDirectionFont:SetText("Scrolling direction")
 local SettingsDirectionMenu = CreateFrame("Button", "SettingsDirectionMenu", ReplaySettingsPanel, "UIDropDownMenuTemplate")
 SettingsDirectionMenu:ClearAllPoints()
 SettingsDirectionMenu:SetPoint("TOPLEFT", ReplaySettingsPanel, 180, -120)
-UIDropDownMenu_SetWidth(140, SettingsDirectionMenu)
-UIDropDownMenu_JustifyText("CENTER", SettingsDirectionMenu)
+if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+	UIDropDownMenu_SetWidth(SettingsDirectionMenu, 140)
+	UIDropDownMenu_JustifyText(SettingsDirectionMenu, "CENTER")
+else
+	UIDropDownMenu_SetWidth(140, SettingsDirectionMenu)
+	UIDropDownMenu_JustifyText("CENTER", SettingsDirectionMenu)
+end
 local directionInitMenu = {}
 UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 	directionInitMenu.checked = nil
@@ -190,7 +195,11 @@ UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 	directionInitMenu.func = function()
 		if replaySavedSettings ~= nil and replaySavedSettings[5] == 2 then
 			replaySavedSettings[5] = 1
-			UIDropDownMenu_SetText("Right", SettingsDirectionMenu)
+			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+				UIDropDownMenu_SetText(SettingsDirectionMenu, "Right")
+			else
+				UIDropDownMenu_SetText("Right", SettingsDirectionMenu)
+			end
 			for i=table.maxn(spellTable),0,-1 do
 				if _G["ReplayTexture"..i] ~= nil and _G["ReplayTexture"..i]:IsShown() then
 					_G["ReplayTexture"..i]:Hide()
@@ -230,7 +239,11 @@ UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 	directionInitMenu.func = function()
 		if replaySavedSettings ~= nil and replaySavedSettings[5] == 1 then
 			replaySavedSettings[5] = 2
-			UIDropDownMenu_SetText("Left", SettingsDirectionMenu)
+			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+				UIDropDownMenu_SetText(SettingsDirectionMenu, "Left")
+			else
+				UIDropDownMenu_SetText("Left", SettingsDirectionMenu)
+			end
 			for i=table.maxn(spellTable),0,-1 do
 				if _G["ReplayTexture"..i] ~= nil and _G["ReplayTexture"..i]:IsShown() then
 					_G["ReplayTexture"..i]:Hide()
@@ -302,7 +315,11 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			SettingsBackgroundButton:SetChecked()
 			replaySavedSettings[4] = 1
 			SettingsScalingSlider:SetValue(2)
-			UIDropDownMenu_SetText("Right", SettingsDirectionMenu)
+			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+				UIDropDownMenu_SetText(SettingsDirectionMenu, "Right")
+			else
+				UIDropDownMenu_SetText("Right", SettingsDirectionMenu)
+			end
 			replaySavedSettings[5] = 1
 		else
 			if replaySavedSettings[1] == 0 then
@@ -337,9 +354,17 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			SettingsScalingSlider:SetValue((replaySavedSettings[4] - 0.8) * 10)
 			ReplayFrame:SetScale(replaySavedSettings[4])
 			if replaySavedSettings[5] == 1 then
-				UIDropDownMenu_SetText("Right", SettingsDirectionMenu)
+				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+					UIDropDownMenu_SetText(SettingsDirectionMenu, "Right")
+				else
+					UIDropDownMenu_SetText("Right", SettingsDirectionMenu)
+				end
 			else
-				UIDropDownMenu_SetText("Left", SettingsDirectionMenu)
+				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+					UIDropDownMenu_SetText(SettingsDirectionMenu, "Left")
+				else
+					UIDropDownMenu_SetText("Left", SettingsDirectionMenu)
+				end
 			end
 		end
 		ReplayFrame:UnregisterEvent("PLAYER_LOGIN")
