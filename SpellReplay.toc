@@ -3,5 +3,5 @@
 ## Author: Oldsalt (Smolderforge)
 ## Notes: Displays the spells you just casted
 ## DefaultState: disabled
-## SavedVariablesPerCharacter: replaySavedSettings
+## SavedVariablesPerCharacter: replaySavedSettings, displayToPartyTable
 SpellReplay.lua

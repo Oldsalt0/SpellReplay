@@ -9,8 +9,12 @@ ReplayFrame:SetMovable(true)
 
 local ReplayBackground = ReplayFrame:CreateTexture(nil, "BACKGROUND")
 ReplayBackground:SetAllPoints()
-ReplayBackground:SetTexture(0, 0, 0, 0.3)
+ReplayBackground:SetTexture(0, 0, 0, 0.15)
 
+local spellcache = setmetatable({}, {__index=function(t, v) local a = {GetSpellInfo(v)} if GetSpellInfo(v) then t[v] = a end return a end})
+local function GetSpellInfo(a)
+	return unpack(spellcache[a])
+end
 local spellTable = {}
 local timestampTable = {}
 local replaySettings = {}
@@ -21,19 +25,17 @@ InterfaceOptions_AddCategory(replaySettings.panel)
 local SettingsTitle = ReplaySettingsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 SettingsTitle:SetPoint("TOPLEFT", ReplaySettingsPanel, 15, -15)
 SettingsTitle:SetFont("Fonts\\FRIZQT__.TTF", 17)
-SettingsTitle:SetJustifyH("LEFT")
 SettingsTitle:SetText("SpellReplay")
 
 local SettingsGeneralTitle = ReplaySettingsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 SettingsGeneralTitle:SetPoint("TOPLEFT", ReplaySettingsPanel, 15, -40)
 SettingsGeneralTitle:SetFont("Fonts\\FRIZQT__.TTF", 10)
-SettingsGeneralTitle:SetJustifyH("LEFT")
 SettingsGeneralTitle:SetTextColor(1, 1, 1)
 SettingsGeneralTitle:SetText("General settings")
 
 local SettingsEnableButton = CreateFrame("CheckButton", "SettingsEnableButton", ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
 SettingsEnableButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 25, -60)
-SettingsEnableButton:SetHitRectInsets(0, -100, 0, 0)
+SettingsEnableButton:SetHitRectInsets(0, -45, 0, 0)
 SettingsEnableButton:SetWidth(25)
 SettingsEnableButton:SetHeight(25)
 SettingsEnableButton:SetScript("OnClick", function()
@@ -53,13 +55,12 @@ end)
 local SettingsEnableFont = ReplaySettingsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 SettingsEnableFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 50, -65)
 SettingsEnableFont:SetFont("Fonts\\FRIZQT__.TTF", 13)
-SettingsEnableFont:SetJustifyH("LEFT")
 SettingsEnableFont:SetTextColor(1, 1, 1)
 SettingsEnableFont:SetText("Enable")
 
 local SettingsLockButton = CreateFrame("CheckButton", "SettingsLockButton", ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
 SettingsLockButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 25, -90)
-SettingsLockButton:SetHitRectInsets(0, -150, 0, 0)
+SettingsLockButton:SetHitRectInsets(0, -90, 0, 0)
 SettingsLockButton:SetWidth(25)
 SettingsLockButton:SetHeight(25)
 SettingsLockButton:SetScript("OnClick", function()
@@ -81,13 +82,12 @@ end)
 local SettingsLockFont = ReplaySettingsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 SettingsLockFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 50, -95)
 SettingsLockFont:SetFont("Fonts\\FRIZQT__.TTF", 13)
-SettingsLockFont:SetJustifyH("LEFT")
 SettingsLockFont:SetTextColor(1, 1, 1)
 SettingsLockFont:SetText("Lock position")
 
 local SettingsBackgroundButton = CreateFrame("CheckButton", "SettingsBackgroundButton", ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
 SettingsBackgroundButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 25, -120)
-SettingsBackgroundButton:SetHitRectInsets(0, -150, 0, 0)
+SettingsBackgroundButton:SetHitRectInsets(0, -120, 0, 0)
 SettingsBackgroundButton:SetWidth(25)
 SettingsBackgroundButton:SetHeight(25)
 SettingsBackgroundButton:SetScript("OnClick", function()
@@ -107,17 +107,15 @@ SettingsBackgroundButton:SetScript("OnClick", function()
 	end
 end)
 
-local SettingsBackgroundFont = ReplaySettingsPanel:CreateFontString("SettingsBackgroundFont", "ARTWORK", "GameFontNormal")
+local SettingsBackgroundFont = ReplaySettingsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 SettingsBackgroundFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 50, -125)
 SettingsBackgroundFont:SetFont("Fonts\\FRIZQT__.TTF", 13)
-SettingsBackgroundFont:SetJustifyH("LEFT")
 SettingsBackgroundFont:SetTextColor(1, 1, 1)
 SettingsBackgroundFont:SetText("Show background")
 
 local SettingsScalingFont = ReplaySettingsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 SettingsScalingFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 230, -50)
 SettingsScalingFont:SetFont("Fonts\\FRIZQT__.TTF", 13)
-SettingsScalingFont:SetJustifyH("LEFT")
 SettingsScalingFont:SetText("Frame scaling")
 
 local SettingsScalingSlider = CreateFrame("Slider", "SettingsScalingSlider", ReplaySettingsPanel, "OptionsSliderTemplate")
@@ -165,8 +163,6 @@ end)
 local SettingsDirectionFont = ReplaySettingsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 SettingsDirectionFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 200, -105)
 SettingsDirectionFont:SetFont("Fonts\\FRIZQT__.TTF", 13)
-SettingsDirectionFont:SetJustifyH("LEFT")
-SettingsDirectionFont:SetTextColor(1, 1, 1)
 SettingsDirectionFont:SetText("Scrolling direction")
 
 local SettingsDirectionMenu = CreateFrame("Button", "SettingsDirectionMenu", ReplaySettingsPanel, "UIDropDownMenuTemplate")
@@ -193,7 +189,7 @@ UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 		end
 	end
 	directionInitMenu.func = function()
-		if replaySavedSettings ~= nil and replaySavedSettings[5] == 2 then
+		if replaySavedSettings ~= nil and replaySavedSettings[5] ~= 1 then
 			replaySavedSettings[5] = 1
 			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
 				UIDropDownMenu_SetText(SettingsDirectionMenu, "Right")
@@ -237,7 +233,7 @@ UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 		end
 	end
 	directionInitMenu.func = function()
-		if replaySavedSettings ~= nil and replaySavedSettings[5] == 1 then
+		if replaySavedSettings ~= nil and replaySavedSettings[5] ~= 2 then
 			replaySavedSettings[5] = 2
 			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
 				UIDropDownMenu_SetText(SettingsDirectionMenu, "Left")
@@ -271,6 +267,202 @@ UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 		end
 	end
 	UIDropDownMenu_AddButton(directionInitMenu)
+end)
+
+local SettingsResistsTitle = ReplaySettingsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+SettingsResistsTitle:SetPoint("TOPLEFT", ReplaySettingsPanel, 15, -170)
+SettingsResistsTitle:SetFont("Fonts\\FRIZQT__.TTF", 10)
+SettingsResistsTitle:SetTextColor(1, 1, 1)
+SettingsResistsTitle:SetText("Resists settings")
+
+local SettingsDisplayResistsButton = CreateFrame("CheckButton", "SettingsDisplayResistsButton", ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
+SettingsDisplayResistsButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 25, -190)
+SettingsDisplayResistsButton:SetHitRectInsets(0, -100, 0, 0)
+SettingsDisplayResistsButton:SetWidth(25)
+SettingsDisplayResistsButton:SetHeight(25)
+SettingsDisplayResistsButton:SetScript("OnClick", function()
+	if SettingsDisplayResistsButton:GetChecked() then
+		replaySavedSettings[6] = 1
+		SettingsResistsOnFrameButton:Enable()
+		SettingsResistsOnFrameFont:SetTextColor(1, 1, 1)
+		SettingsResistsOnChatFrameButton:Enable()
+		SettingsResistsOnChatFrameFont:SetTextColor(1, 1, 1)
+		SettingsResistsOnPartyButton:Enable()
+		SettingsResistsOnPartyFont:SetTextColor(1, 1, 1)
+		SettingsPartySpellsMenuButton:Enable()
+		SettingsPartySpellsMenuText:SetTextColor(1, 1, 1)
+		SettingsPartySpellsAddButton:Enable()
+		SettingsPartySpellsDelButton:Enable()
+	else
+		replaySavedSettings[6] = 0
+		SettingsResistsOnFrameButton:Disable()
+		SettingsResistsOnFrameFont:SetTextColor(0.5, 0.5, 0.5)
+		SettingsResistsOnChatFrameButton:Disable()
+		SettingsResistsOnChatFrameFont:SetTextColor(0.5, 0.5, 0.5)
+		SettingsResistsOnPartyButton:Disable()
+		SettingsResistsOnPartyFont:SetTextColor(0.5, 0.5, 0.5)
+		SettingsPartySpellsMenuButton:Disable()
+		SettingsPartySpellsMenuText:SetTextColor(0.5, 0.5, 0.5)
+		SettingsPartySpellsAddButton:Disable()
+		SettingsPartySpellsDelButton:Disable()
+	end
+end)
+
+local SettingsDisplayResistsFont = ReplaySettingsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+SettingsDisplayResistsFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 50, -196)
+SettingsDisplayResistsFont:SetFont("Fonts\\FRIZQT__.TTF", 13)
+SettingsDisplayResistsFont:SetTextColor(1, 1, 1)
+SettingsDisplayResistsFont:SetText("Display resists")
+
+local SettingsResistsOnFrameButton = CreateFrame("CheckButton", "SettingsResistsOnFrameButton", ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
+SettingsResistsOnFrameButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 40, -215)
+SettingsResistsOnFrameButton:SetHitRectInsets(0, -80, 0, 0)
+SettingsResistsOnFrameButton:SetWidth(25)
+SettingsResistsOnFrameButton:SetHeight(25)
+SettingsResistsOnFrameButton:SetScript("OnClick", function()
+	if SettingsResistsOnFrameButton:GetChecked() then
+		replaySavedSettings[7] = 1
+	else
+		replaySavedSettings[7] = 0
+	end
+end)
+
+local SettingsResistsOnFrameFont = ReplaySettingsPanel:CreateFontString("SettingsResistsOnFrameFont", "ARTWORK", "GameFontNormal")
+SettingsResistsOnFrameFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 65, -220)
+SettingsResistsOnFrameFont:SetFont("Fonts\\FRIZQT__.TTF", 10)
+SettingsResistsOnFrameFont:SetTextColor(1, 1, 1)
+SettingsResistsOnFrameFont:SetText("On the frame")
+
+local SettingsResistsOnChatFrameButton = CreateFrame("CheckButton", "SettingsResistsOnChatFrameButton", ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
+SettingsResistsOnChatFrameButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 40, -235)
+SettingsResistsOnChatFrameButton:SetHitRectInsets(0, -105, 0, 0)
+SettingsResistsOnChatFrameButton:SetWidth(25)
+SettingsResistsOnChatFrameButton:SetHeight(25)
+SettingsResistsOnChatFrameButton:SetScript("OnClick", function()
+	if SettingsResistsOnChatFrameButton:GetChecked() then
+		replaySavedSettings[8] = 1
+	else
+		replaySavedSettings[8] = 0
+	end
+end)
+
+local SettingsResistsOnChatFrameFont = ReplaySettingsPanel:CreateFontString("SettingsResistsOnChatFrameFont", "ARTWORK", "GameFontNormal")
+SettingsResistsOnChatFrameFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 65, -240)
+SettingsResistsOnChatFrameFont:SetFont("Fonts\\FRIZQT__.TTF", 10)
+SettingsResistsOnChatFrameFont:SetTextColor(1, 1, 1)
+SettingsResistsOnChatFrameFont:SetText("On the chat")
+
+local SettingsResistsOnPartyButton = CreateFrame("CheckButton", "SettingsResistsOnPartyButton", ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
+SettingsResistsOnPartyButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 40, -255)
+SettingsResistsOnPartyButton:SetHitRectInsets(0, -130, 0, 0)
+SettingsResistsOnPartyButton:SetWidth(25)
+SettingsResistsOnPartyButton:SetHeight(25)
+SettingsResistsOnPartyButton:SetScript("OnClick", function()
+	if SettingsResistsOnPartyButton:GetChecked() then
+		replaySavedSettings[9] = 1
+		SettingsPartySpellsMenuButton:Enable()
+		SettingsPartySpellsMenuText:SetTextColor(1, 1, 1)
+		SettingsPartySpellsAddButton:Enable()
+		SettingsPartySpellsDelButton:Enable()
+	else
+		replaySavedSettings[9] = 0
+		SettingsPartySpellsMenuButton:Disable()
+		SettingsPartySpellsMenuText:SetTextColor(0.5, 0.5, 0.5)
+		SettingsPartySpellsAddButton:Disable()
+		SettingsPartySpellsDelButton:Disable()
+	end
+end)
+
+local SettingsResistsOnPartyFont = ReplaySettingsPanel:CreateFontString("SettingsResistsOnPartyFont", "ARTWORK", "GameFontNormal")
+SettingsResistsOnPartyFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 65, -260)
+SettingsResistsOnPartyFont:SetFont("Fonts\\FRIZQT__.TTF", 10)
+SettingsResistsOnPartyFont:SetTextColor(1, 1, 1)
+SettingsResistsOnPartyFont:SetText("On /party for the spells listed below:")
+
+local SettingsPartySpellsMenu = CreateFrame("Button", "SettingsPartySpellsMenu", ReplaySettingsPanel, "UIDropDownMenuTemplate")
+SettingsPartySpellsMenu:ClearAllPoints()
+SettingsPartySpellsMenu:SetPoint("TOPLEFT", ReplaySettingsPanel, 80, -280)
+if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+	UIDropDownMenu_SetWidth(SettingsPartySpellsMenu, 140)
+	UIDropDownMenu_JustifyText(SettingsPartySpellsMenu, "CENTER")
+else
+	UIDropDownMenu_SetWidth(140, SettingsPartySpellsMenu)
+	UIDropDownMenu_JustifyText("CENTER", SettingsPartySpellsMenu)
+end
+
+if displayToPartyTable == nil then
+	displayToPartyTable = {"Cheap Shot", "Kidney Shot"}
+end
+local partySpellsInitMenu = {}
+local function partySpellsInitFunc()
+	partySpellsInitMenu.checked = nil
+	partySpellsInitMenu.func = nil
+	for i,value in pairs(displayToPartyTable) do
+		partySpellsInitMenu.text = value
+		partySpellsInitMenu.func = function()
+			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+				UIDropDownMenu_SetText(SettingsPartySpellsMenu, value)
+			else
+				UIDropDownMenu_SetText(value, SettingsPartySpellsMenu)
+			end
+		end
+		UIDropDownMenu_AddButton(partySpellsInitMenu)
+	end
+end
+UIDropDownMenu_Initialize(SettingsPartySpellsMenu, partySpellsInitFunc)
+
+local SettingsPartySpellsAddButton = CreateFrame("Button", "SettingsPartySpellsAddButton", ReplaySettingsPanel, "UIPanelButtonTemplate")
+SettingsPartySpellsAddButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 100, -305)
+SettingsPartySpellsAddButton:SetWidth(75)
+SettingsPartySpellsAddButton:SetHeight(25)
+SettingsPartySpellsAddButton:SetText("Add new")
+SettingsPartySpellsAddButton:SetScript("OnClick", function()
+	StaticPopupDialogs["ADDPARTYSPELL_POPUP"] = {
+		text = "Type the name of the spell you want to add",
+		button1 = "Add",
+		button2 = "Cancel",
+		OnShow = function()
+			StaticPopup1EditBox:SetText("")
+		end,
+		OnAccept = function()
+			if StaticPopup1EditBox:GetText() ~= "" then
+				tinsert(displayToPartyTable, StaticPopup1EditBox:GetText())
+				UIDropDownMenu_Initialize(SettingsPartySpellsMenu, partySpellsInitFunc)
+			end
+		end,
+		EditBoxOnEscapePressed = function()
+			StaticPopup_Hide("ADDPARTYSPELL_POPUP")
+		end,
+		exclusive = 1,
+		hasEditBox = 1,
+		hideOnEscape = 1,
+		timeout = 0,
+		whileDead = 1,
+	}
+	StaticPopup_Show ("ADDPARTYSPELL_POPUP")
+end)
+
+local SettingsPartySpellsDelButton = CreateFrame("Button", "SettingsPartySpellsDelButton", ReplaySettingsPanel, "UIPanelButtonTemplate")
+SettingsPartySpellsDelButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 175, -305)
+SettingsPartySpellsDelButton:SetWidth(75)
+SettingsPartySpellsDelButton:SetHeight(25)
+SettingsPartySpellsDelButton:SetText("Delete")
+SettingsPartySpellsDelButton:SetScript("OnClick", function()
+	local partySpellToDelete = UIDropDownMenu_GetText(SettingsPartySpellsMenu)
+	if partySpellToDelete ~= nil then
+		for i,value in pairs(displayToPartyTable) do
+			if value == partySpellToDelete then
+				tremove(displayToPartyTable, i)
+				sort(displayToPartyTable)
+				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+					UIDropDownMenu_SetText(SettingsPartySpellsMenu, "")
+				else
+					UIDropDownMenu_SetText("", SettingsPartySpellsMenu)
+				end
+				return
+			end
+		end
+	end
 end)
 
 local total = 0
@@ -321,6 +513,10 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				UIDropDownMenu_SetText("Right", SettingsDirectionMenu)
 			end
 			replaySavedSettings[5] = 1
+			replaySavedSettings[6] = 1
+			replaySavedSettings[7] = 1
+			replaySavedSettings[8] = 1
+			replaySavedSettings[9] = 1
 		else
 			if replaySavedSettings[1] == 0 then
 				ReplayFrame:Hide()
@@ -366,6 +562,37 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 					UIDropDownMenu_SetText("Left", SettingsDirectionMenu)
 				end
 			end
+			if replaySavedSettings[6] == 1 then
+				SettingsDisplayResistsButton:SetChecked()
+			else
+				SettingsResistsOnFrameButton:Disable()
+				SettingsResistsOnFrameFont:SetTextColor(0.5, 0.5, 0.5)
+				SettingsResistsOnChatFrameButton:Disable()
+				SettingsResistsOnChatFrameFont:SetTextColor(0.5, 0.5, 0.5)
+				SettingsResistsOnPartyButton:Disable()
+				SettingsResistsOnPartyFont:SetTextColor(0.5, 0.5, 0.5)
+				SettingsPartySpellsMenuButton:Disable()
+				SettingsPartySpellsMenuText:SetTextColor(0.5, 0.5, 0.5)
+				SettingsPartySpellsAddButton:Disable()
+				SettingsPartySpellsDelButton:Disable()
+			end
+			if replaySavedSettings[7] == 1 then
+				SettingsResistsOnFrameButton:SetChecked()
+			end
+			if replaySavedSettings[8] == 1 then
+				SettingsResistsOnChatFrameButton:SetChecked()
+			end
+			if replaySavedSettings[9] == 1 then
+				SettingsResistsOnPartyButton:SetChecked()
+			else
+				SettingsPartySpellsMenuButton:Disable()
+				SettingsPartySpellsMenuText:SetTextColor(0.5, 0.5, 0.5)
+				SettingsPartySpellsAddButton:Disable()
+				SettingsPartySpellsDelButton:Disable()
+			end
+		end
+		if displayToPartyTable == nil then
+			displayToPartyTable = {"Cheap Shot", "Kidney Shot"}
 		end
 		ReplayFrame:UnregisterEvent("PLAYER_LOGIN")
 	end
@@ -407,9 +634,9 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			local i = table.maxn(spellTable) - 1
 			if spellName == "PvP Trinket" then
 				if UnitFactionGroup("player") == "Alliance" then
-					_G["ReplayTexture"..i]:SetTexture(select(10, GetItemInfo(18854)))
+					_G["ReplayTexture"..i]:SetTexture(select(10, GetItemInfo(37864)))
 				else
-					_G["ReplayTexture"..i]:SetTexture(select(10, GetItemInfo(18834)))
+					_G["ReplayTexture"..i]:SetTexture(select(10, GetItemInfo(37865)))
 				end
 			elseif spellName == "Faerie Fire (Feral)" then
 				_G["ReplayTexture"..i]:SetTexture(select(3, GetSpellInfo("Faerie Fire")))
@@ -486,13 +713,8 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 					_G["ReplayUpperTexture"..i]:SetTexture(select(3, GetSpellInfo(spellID)))
 				end
 			end
-		elseif eventType == "SPELL_MISSED" and spellCaster == UnitName("player") and arg12 ~= "ABSORB" then -- Other missed spells
-			if arg10 == "Blind" or arg10 == "Cheap Shot" or arg10 == "Gouge" or arg10 == "Kick" or arg10 == "Kidney Shot" or arg10 == "Counterspell" or arg10 == "Polymorph" or arg10 == "Pummel" or arg10 == "Shield Bash" or arg10 == "Psychic Scream" or arg10 == "Silence" or arg10 == "Bash" or arg10 == "Cyclone" or arg10 == "Entangling Roots" or arg10 == "Maim" or arg10 == "Earth Shock" or arg10 == "Scatter Shot" or arg10 == "Wyvern Sting" then
-				SendChatMessage(arg10.." failed ("..arg12..")", "PARTY")
-			else
-				DEFAULT_CHAT_FRAME:AddMessage("|cffffa500"..arg10.." failed ("..arg12..")")
-			end
-			if arg12 ~= "IMMUNE" and spellID ~= 64382 then -- not Shattering Throw immunes (WotLK)
+		elseif replaySavedSettings[6] == 1 and eventType == "SPELL_MISSED" and spellCaster == UnitName("player") and arg12 ~= "ABSORB" then -- Other missed spells
+			if replaySavedSettings[7] == 1 and (spellID ~= 64382 or arg12 ~= "IMMUNE" and spellID == 64382) then -- not Shattering Throw immunes (WotLK)
 				for i=table.maxn(spellTable),0,-1 do
 					if _G["ReplayTexture"..i] ~= nil and _G["ReplayFont"..i] == nil and select(3, GetSpellInfo(spellID)) == _G["ReplayTexture"..i]:GetTexture() and (GetTime() - timestampTable[i+1] < 1 or strfind(arg10, "Effect") and GetTime() - timestampTable[i+1] < 1.5) then
 						_G["ReplayFailTexture"..i] = ReplayFrame:CreateTexture(_G["ReplayFailTexture"..i], "OVERLAY")
@@ -506,6 +728,17 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 						_G["ReplayFont"..i]:SetJustifyH("CENTER")
 						_G["ReplayFont"..i]:SetText("|cffffa500"..arg12)
 						break
+					end
+				end
+			end
+			if replaySavedSettings[8] == 1 then
+				DEFAULT_CHAT_FRAME:AddMessage("|cffffa500"..arg10.." failed ("..arg12..")") -- chat frame message for failed spells
+			end
+			if replaySavedSettings[9] == 1 and displayToPartyTable ~= nil then
+				for i,value in pairs(displayToPartyTable) do
+					if arg10 == value then
+						SendChatMessage(arg10.." failed ("..arg12..")", "PARTY") -- /party message for all the failed spells on displayToPartyTable
+						return
 					end
 				end
 			end
