@@ -15,6 +15,11 @@ local spellcache = setmetatable({}, {__index=function(t, v) local a = {GetSpellI
 local function GetSpellInfo(a)
 	return unpack(spellcache[a])
 end
+local replayTexture = {}
+local replayFont = {}
+local replayFailTexture = {}
+local replayUpperTexture = {}
+local replayUpperFailTexture = {}
 local spellTable = {}
 local timestampTable = {}
 local replaySettings = {}
@@ -33,7 +38,7 @@ SettingsGeneralTitle:SetFont("Fonts\\FRIZQT__.TTF", 10)
 SettingsGeneralTitle:SetTextColor(1, 1, 1)
 SettingsGeneralTitle:SetText("General settings")
 
-local SettingsEnableButton = CreateFrame("CheckButton", "SettingsEnableButton", ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
+local SettingsEnableButton = CreateFrame("CheckButton", nil, ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
 SettingsEnableButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 25, -60)
 SettingsEnableButton:SetHitRectInsets(0, -45, 0, 0)
 SettingsEnableButton:SetWidth(25)
@@ -58,7 +63,7 @@ SettingsEnableFont:SetFont("Fonts\\FRIZQT__.TTF", 13)
 SettingsEnableFont:SetTextColor(1, 1, 1)
 SettingsEnableFont:SetText("Enable")
 
-local SettingsLockButton = CreateFrame("CheckButton", "SettingsLockButton", ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
+local SettingsLockButton = CreateFrame("CheckButton", nil, ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
 SettingsLockButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 25, -90)
 SettingsLockButton:SetHitRectInsets(0, -90, 0, 0)
 SettingsLockButton:SetWidth(25)
@@ -197,26 +202,26 @@ UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 				UIDropDownMenu_SetText("Right", SettingsDirectionMenu)
 			end
 			for i=table.maxn(spellTable),0,-1 do
-				if _G["ReplayTexture"..i] ~= nil and _G["ReplayTexture"..i]:IsShown() then
-					_G["ReplayTexture"..i]:Hide()
-					_G["ReplayTexture"..i] = nil
-					if _G["ReplayFont"..i] ~= nil then
-						_G["ReplayFont"..i]:Hide()
-						_G["ReplayFont"..i] = nil
+				if replayTexture[i] ~= nil and replayTexture[i]:IsShown() then
+					replayTexture[i]:Hide()
+					replayTexture[i] = nil
+					if replayFont[i] ~= nil then
+						replayFont[i]:Hide()
+						replayFont[i] = nil
 					end
-					if _G["ReplayFailTexture"..i] ~= nil then
-						_G["ReplayFailTexture"..i]:Hide()
-						_G["ReplayFailTexture"..i] = nil
+					if replayFailTexture[i] ~= nil then
+						replayFailTexture[i]:Hide()
+						replayFailTexture[i] = nil
 					end
-					if _G["ReplayUpperTexture"..i] ~= nil then
-						_G["ReplayUpperTexture"..i]:Hide()
-						_G["ReplayUpperTexture"..i] = nil
+					if replayUpperTexture[i] ~= nil then
+						replayUpperTexture[i]:Hide()
+						replayUpperTexture[i] = nil
 					end
-					if _G["ReplayUpperFailTexture"..i] ~= nil then
-						_G["ReplayUpperFailTexture"..i]:Hide()
-						_G["ReplayUpperFailTexture"..i] = nil
+					if replayUpperFailTexture[i] ~= nil then
+						replayUpperFailTexture[i]:Hide()
+						replayUpperFailTexture[i] = nil
 					end
-				elseif _G["ReplayTexture"..i] ~= nil then
+				elseif replayTexture[i] ~= nil then
 					break
 				end
 			end
@@ -241,26 +246,26 @@ UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 				UIDropDownMenu_SetText("Left", SettingsDirectionMenu)
 			end
 			for i=table.maxn(spellTable),0,-1 do
-				if _G["ReplayTexture"..i] ~= nil and _G["ReplayTexture"..i]:IsShown() then
-					_G["ReplayTexture"..i]:Hide()
-					_G["ReplayTexture"..i] = nil
-					if _G["ReplayFont"..i] ~= nil then
-						_G["ReplayFont"..i]:Hide()
-						_G["ReplayFont"..i] = nil
+				if replayTexture[i] ~= nil and replayTexture[i]:IsShown() then
+					replayTexture[i]:Hide()
+					replayTexture[i] = nil
+					if replayFont[i] ~= nil then
+						replayFont[i]:Hide()
+						replayFont[i] = nil
 					end
-					if _G["ReplayFailTexture"..i] ~= nil then
-						_G["ReplayFailTexture"..i]:Hide()
-						_G["ReplayFailTexture"..i] = nil
+					if replayFailTexture[i] ~= nil then
+						replayFailTexture[i]:Hide()
+						replayFailTexture[i] = nil
 					end
-					if _G["ReplayUpperTexture"..i] ~= nil then
-						_G["ReplayUpperTexture"..i]:Hide()
-						_G["ReplayUpperTexture"..i] = nil
+					if replayUpperTexture[i] ~= nil then
+						replayUpperTexture[i]:Hide()
+						replayUpperTexture[i] = nil
 					end
-					if _G["ReplayUpperFailTexture"..i] ~= nil then
-						_G["ReplayUpperFailTexture"..i]:Hide()
-						_G["ReplayUpperFailTexture"..i] = nil
+					if replayUpperFailTexture[i] ~= nil then
+						replayUpperFailTexture[i]:Hide()
+						replayUpperFailTexture[i] = nil
 					end
-				elseif _G["ReplayTexture"..i] ~= nil then
+				elseif replayTexture[i] ~= nil then
 					break
 				end
 			end
@@ -275,7 +280,7 @@ SettingsResistsTitle:SetFont("Fonts\\FRIZQT__.TTF", 10)
 SettingsResistsTitle:SetTextColor(1, 1, 1)
 SettingsResistsTitle:SetText("Resists settings")
 
-local SettingsDisplayResistsButton = CreateFrame("CheckButton", "SettingsDisplayResistsButton", ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
+local SettingsDisplayResistsButton = CreateFrame("CheckButton", nil, ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
 SettingsDisplayResistsButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 25, -190)
 SettingsDisplayResistsButton:SetHitRectInsets(0, -100, 0, 0)
 SettingsDisplayResistsButton:SetWidth(25)
@@ -475,9 +480,9 @@ local function AuraDelay(self, elapsed)
 				local spellName, _, spellIcon = UnitBuff("player", i)
 				if spellName == spellTable[table.maxn(spellTable)] then
 					if table.maxn(spellTable) <= 1 then
-						ReplayTexture0:SetTexture(spellIcon)
+						replayTexture[0]:SetTexture(spellIcon)
 					else
-						_G["ReplayTexture"..table.maxn(spellTable)-1]:SetTexture(spellIcon)
+						replayTexture[table.maxn(spellTable)-1]:SetTexture(spellIcon)
 					end
 					break
 				end
@@ -495,7 +500,7 @@ ReplayFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 ReplayFrame:RegisterEvent("PLAYER_LOGIN")
 ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 	if event == "PLAYER_LOGIN" then
-		if replaySavedSettings == nil or #replaySavedSettings == 0 then
+		if replaySavedSettings == nil or #replaySavedSettings == 0 or replaySavedSettings[6] == nil then
 			replaySavedSettings = {}
 			replaySavedSettings[1] = 1
 			SettingsEnableButton:SetChecked()
@@ -514,9 +519,13 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			end
 			replaySavedSettings[5] = 1
 			replaySavedSettings[6] = 1
+			SettingsDisplayResistsButton:SetChecked()
 			replaySavedSettings[7] = 1
+			SettingsResistsOnFrameButton:SetChecked()
 			replaySavedSettings[8] = 1
+			SettingsResistsOnChatFrameButton:SetChecked()
 			replaySavedSettings[9] = 1
+			SettingsResistsOnPartyButton:SetChecked()
 		else
 			if replaySavedSettings[1] == 0 then
 				ReplayFrame:Hide()
@@ -603,30 +612,30 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			AuraDelayFrame:SetScript("OnUpdate", AuraDelay)
 		end
 		if table.maxn(spellTable) == 0 then
-			ReplayTexture0 = ReplayFrame:CreateTexture(nil, "ARTWORK")
-			ReplayTexture0:SetPoint("TOPLEFT", 0, 0)
-			ReplayTexture0:SetWidth(40)
-			ReplayTexture0:SetHeight(40)
+			replayTexture[0] = ReplayFrame:CreateTexture(nil, "ARTWORK")
+			replayTexture[0]:SetPoint("TOPLEFT", 0, 0)
+			replayTexture[0]:SetWidth(40)
+			replayTexture[0]:SetHeight(40)
 			spellTable[1] = spellName
 			timestampTable[1] = GetTime()
 		elseif spellName ~= spellTable[table.maxn(spellTable)] or spellName == spellTable[table.maxn(spellTable)] and GetTime() - timestampTable[table.maxn(timestampTable)] > 0.5 then
 			local i = table.maxn(spellTable)
-			_G["ReplayTexture"..i] = ReplayFrame:CreateTexture(_G["ReplayTexture"..i])
+			replayTexture[i] = ReplayFrame:CreateTexture(nil)
 			if replaySavedSettings[5] == 1 or replaySavedSettings[5] == nil then
-				if _G["ReplayTexture"..(i-1)] == nil or select(4, _G["ReplayTexture"..(i-1)]:GetPoint()) >= 140 then
-					_G["ReplayTexture"..i]:SetPoint("TOPLEFT", 0, 0)
+				if replayTexture[i-1] == nil or select(4, replayTexture[i-1]:GetPoint()) >= 140 then
+					replayTexture[i]:SetPoint("TOPLEFT", 0, 0)
 				else
-					_G["ReplayTexture"..i]:SetPoint("TOPLEFT", select(4, _G["ReplayTexture"..(i-1)]:GetPoint()) - 40, select(5, _G["ReplayTexture"..(i-1)]:GetPoint()))
+					replayTexture[i]:SetPoint("TOPLEFT", select(4, replayTexture[i-1]:GetPoint()) - 40, select(5, replayTexture[i-1]:GetPoint()))
 				end
 			elseif replaySavedSettings[5] == 2 then
-				if _G["ReplayTexture"..(i-1)] == nil or select(4, _G["ReplayTexture"..(i-1)]:GetPoint()) <= -140 then
-					_G["ReplayTexture"..i]:SetPoint("TOPLEFT", 0, 0)
+				if replayTexture[i-1] == nil or select(4, replayTexture[i-1]:GetPoint()) <= -140 then
+					replayTexture[i]:SetPoint("TOPLEFT", 0, 0)
 				else
-					_G["ReplayTexture"..i]:SetPoint("TOPLEFT", select(4, _G["ReplayTexture"..(i-1)]:GetPoint()) + 40, select(5, _G["ReplayTexture"..(i-1)]:GetPoint()))
+					replayTexture[i]:SetPoint("TOPLEFT", select(4, replayTexture[i-1]:GetPoint()) + 40, select(5, replayTexture[i-1]:GetPoint()))
 				end
 			end
-			_G["ReplayTexture"..i]:SetWidth(40)
-			_G["ReplayTexture"..i]:SetHeight(40)
+			replayTexture[i]:SetWidth(40)
+			replayTexture[i]:SetHeight(40)
 			spellTable[i+1] = spellName
 			timestampTable[i+1] = GetTime()
 		end
@@ -634,26 +643,26 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			local i = table.maxn(spellTable) - 1
 			if spellName == "PvP Trinket" then
 				if UnitFactionGroup("player") == "Alliance" then
-					_G["ReplayTexture"..i]:SetTexture(select(10, GetItemInfo(37864)))
+					replayTexture[i]:SetTexture(select(10, GetItemInfo(37864)))
 				else
-					_G["ReplayTexture"..i]:SetTexture(select(10, GetItemInfo(37865)))
+					replayTexture[i]:SetTexture(select(10, GetItemInfo(37865)))
 				end
 			elseif spellName == "Faerie Fire (Feral)" then
-				_G["ReplayTexture"..i]:SetTexture(select(3, GetSpellInfo("Faerie Fire")))
+				replayTexture[i]:SetTexture(select(3, GetSpellInfo("Faerie Fire")))
 			elseif strfind(spellName, "Mangle") then
-				_G["ReplayTexture"..i]:SetTexture(select(3, GetSpellInfo(33878)))
+				replayTexture[i]:SetTexture(select(3, GetSpellInfo(33878)))
 			elseif spellName == "Restore Mana" then
-				_G["ReplayTexture"..i]:SetTexture(select(10, GetItemInfo(22832)))
+				replayTexture[i]:SetTexture(select(10, GetItemInfo(22832)))
 			elseif spellName == "Healing Potion" then
-				_G["ReplayTexture"..i]:SetTexture(select(10, GetItemInfo(22829)))
+				replayTexture[i]:SetTexture(select(10, GetItemInfo(22829)))
 			elseif spellName == "Refreshment" then
-				_G["ReplayTexture"..i]:SetTexture(select(10, GetItemInfo(34062)))
+				replayTexture[i]:SetTexture(select(10, GetItemInfo(34062)))
 			elseif spellName == "Replenish Mana" then
-				_G["ReplayTexture"..i]:SetTexture(select(10, GetItemInfo(22044)))
+				replayTexture[i]:SetTexture(select(10, GetItemInfo(22044)))
 			elseif spellName == "Master Spellstone" then
-				_G["ReplayTexture"..i]:SetTexture(select(10, GetItemInfo(22646)))
+				replayTexture[i]:SetTexture(select(10, GetItemInfo(22646)))
 			else
-				_G["ReplayTexture"..i]:SetTexture(select(3, GetSpellInfo(spellName)))
+				replayTexture[i]:SetTexture(select(3, GetSpellInfo(spellName)))
 			end
 		end
 	end
@@ -662,12 +671,12 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 		local _, eventType, _, spellCaster, _, _, _, _, spellID = ...
 		if arg12 == "REFLECT" and arg7 == UnitName("player") then -- Shield Reflect
 			for i=table.maxn(spellTable),0,-1 do
-				if _G["ReplayTexture"..i] ~= nil and _G["ReplayUpperTexture"..i] == nil and select(3, GetSpellInfo(23920)) == _G["ReplayTexture"..i]:GetTexture() then
-					_G["ReplayUpperTexture"..i] = ReplayFrame:CreateTexture(_G["ReplayUpperTexture"..i])
-					_G["ReplayUpperTexture"..i]:SetPoint("CENTER", _G["ReplayTexture"..i], 0, 35)
-					_G["ReplayUpperTexture"..i]:SetWidth(25)
-					_G["ReplayUpperTexture"..i]:SetHeight(25)
-					_G["ReplayUpperTexture"..i]:SetTexture(select(3, GetSpellInfo(spellID)))
+				if replayTexture[i] ~= nil and replayUpperTexture[i] == nil and select(3, GetSpellInfo(23920)) == replayTexture[i]:GetTexture() then
+					replayUpperTexture[i] = ReplayFrame:CreateTexture(nil)
+					replayUpperTexture[i]:SetPoint("CENTER", replayTexture[i], 0, 35)
+					replayUpperTexture[i]:SetWidth(25)
+					replayUpperTexture[i]:SetHeight(25)
+					replayUpperTexture[i]:SetTexture(select(3, GetSpellInfo(spellID)))
 					break
 				end
 			end
@@ -678,12 +687,12 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 					local spellName = UnitBuff("player", i)
 					if spellName == "Cloak of Shadows" then
 						for i=table.maxn(spellTable),0,-1 do
-							if _G["ReplayTexture"..i] ~= nil and _G["ReplayUpperTexture"..i] == nil and select(3, GetSpellInfo("Cloak of Shadows")) == _G["ReplayTexture"..i]:GetTexture() then
-								_G["ReplayUpperTexture"..i] = ReplayFrame:CreateTexture(_G["ReplayUpperTexture"..i])
-								_G["ReplayUpperTexture"..i]:SetPoint("CENTER", _G["ReplayTexture"..i], 0, 35)
-								_G["ReplayUpperTexture"..i]:SetWidth(25)
-								_G["ReplayUpperTexture"..i]:SetHeight(25)
-								_G["ReplayUpperTexture"..i]:SetTexture(select(3, GetSpellInfo(spellID)))
+							if replayTexture[i] ~= nil and replayUpperTexture[i] == nil and select(3, GetSpellInfo("Cloak of Shadows")) == replayTexture[i]:GetTexture() then
+								replayUpperTexture[i] = ReplayFrame:CreateTexture(nil)
+								replayUpperTexture[i]:SetPoint("CENTER", replayTexture[i], 0, 35)
+								replayUpperTexture[i]:SetWidth(25)
+								replayUpperTexture[i]:SetHeight(25)
+								replayUpperTexture[i]:SetTexture(select(3, GetSpellInfo(spellID)))
 								break
 							end
 						end
@@ -693,40 +702,40 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 		end
 		if arg10 ~= nil and strfind(arg10, "Poison") then -- Poisons applied by Shiv
 			i = table.maxn(spellTable) - 1
-			if _G["ReplayTexture"..i] ~= nil and _G["ReplayUpperTexture"..i] == nil and select(3, GetSpellInfo(5940)) == _G["ReplayTexture"..i]:GetTexture() and GetTime() - timestampTable[table.maxn(timestampTable)] < 0.03 then
+			if replayTexture[i] ~= nil and replayUpperTexture[i] == nil and select(3, GetSpellInfo(5940)) == replayTexture[i]:GetTexture() and GetTime() - timestampTable[table.maxn(timestampTable)] < 0.03 then
 				if eventType == "SPELL_MISSED" and arg12 ~= "ABSORB" then
-					_G["ReplayUpperTexture"..i] = ReplayFrame:CreateTexture(_G["ReplayUpperTexture"..i])
-					_G["ReplayUpperTexture"..i]:SetPoint("CENTER", _G["ReplayTexture"..i], 0, 35)
-					_G["ReplayUpperTexture"..i]:SetWidth(25)
-					_G["ReplayUpperTexture"..i]:SetHeight(25)
-					_G["ReplayUpperTexture"..i]:SetTexture(select(3, GetSpellInfo(spellID)))
-					_G["ReplayUpperFailTexture"..i] = ReplayFrame:CreateTexture(_G["ReplayUpperFailTexture"..i], "OVERLAY")
-					_G["ReplayUpperFailTexture"..i]:SetPoint("CENTER", _G["ReplayTexture"..i], 0, 35)
-					_G["ReplayUpperFailTexture"..i]:SetWidth(22)
-					_G["ReplayUpperFailTexture"..i]:SetHeight(22)
-					_G["ReplayUpperFailTexture"..i]:SetTexture("Interface\\AddOns\\SpellReplay\\RedCross")
+					replayUpperTexture[i] = ReplayFrame:CreateTexture(nil)
+					replayUpperTexture[i]:SetPoint("CENTER", replayTexture[i], 0, 35)
+					replayUpperTexture[i]:SetWidth(25)
+					replayUpperTexture[i]:SetHeight(25)
+					replayUpperTexture[i]:SetTexture(select(3, GetSpellInfo(spellID)))
+					replayUpperFailTexture[i] = ReplayFrame:CreateTexture(nil, "OVERLAY")
+					replayUpperFailTexture[i]:SetPoint("CENTER", replayTexture[i], 0, 35)
+					replayUpperFailTexture[i]:SetWidth(22)
+					replayUpperFailTexture[i]:SetHeight(22)
+					replayUpperFailTexture[i]:SetTexture("Interface\\AddOns\\SpellReplay\\RedCross")
 				else
-					_G["ReplayUpperTexture"..i] = ReplayFrame:CreateTexture(_G["ReplayUpperTexture"..i])
-					_G["ReplayUpperTexture"..i]:SetPoint("CENTER", _G["ReplayTexture"..i], 0, 35)
-					_G["ReplayUpperTexture"..i]:SetWidth(25)
-					_G["ReplayUpperTexture"..i]:SetHeight(25)
-					_G["ReplayUpperTexture"..i]:SetTexture(select(3, GetSpellInfo(spellID)))
+					replayUpperTexture[i] = ReplayFrame:CreateTexture(nil)
+					replayUpperTexture[i]:SetPoint("CENTER", replayTexture[i], 0, 35)
+					replayUpperTexture[i]:SetWidth(25)
+					replayUpperTexture[i]:SetHeight(25)
+					replayUpperTexture[i]:SetTexture(select(3, GetSpellInfo(spellID)))
 				end
 			end
 		elseif replaySavedSettings[6] == 1 and eventType == "SPELL_MISSED" and spellCaster == UnitName("player") and arg12 ~= "ABSORB" then -- Other missed spells
 			if replaySavedSettings[7] == 1 and (spellID ~= 64382 or arg12 ~= "IMMUNE" and spellID == 64382) then -- not Shattering Throw immunes (WotLK)
 				for i=table.maxn(spellTable),0,-1 do
-					if _G["ReplayTexture"..i] ~= nil and _G["ReplayFont"..i] == nil and select(3, GetSpellInfo(spellID)) == _G["ReplayTexture"..i]:GetTexture() and (GetTime() - timestampTable[i+1] < 1 or strfind(arg10, "Effect") and GetTime() - timestampTable[i+1] < 1.5) then
-						_G["ReplayFailTexture"..i] = ReplayFrame:CreateTexture(_G["ReplayFailTexture"..i], "OVERLAY")
-						_G["ReplayFailTexture"..i]:SetPoint("CENTER", _G["ReplayTexture"..i])
-						_G["ReplayFailTexture"..i]:SetWidth(35)
-						_G["ReplayFailTexture"..i]:SetHeight(35)
-						_G["ReplayFailTexture"..i]:SetTexture("Interface\\AddOns\\SpellReplay\\RedCross")
-						_G["ReplayFont"..i] = ReplayFrame:CreateFontString(_G["ReplayFont"..i], "ARTWORK", "GameFontNormal")
-						_G["ReplayFont"..i]:SetPoint("CENTER", _G["ReplayTexture"..i], 0, -25)
-						_G["ReplayFont"..i]:SetFont("Fonts\\FRIZQT__.TTF", 8)
-						_G["ReplayFont"..i]:SetJustifyH("CENTER")
-						_G["ReplayFont"..i]:SetText("|cffffa500"..arg12)
+					if replayTexture[i] ~= nil and replayFont[i] == nil and select(3, GetSpellInfo(spellID)) == replayTexture[i]:GetTexture() and (GetTime() - timestampTable[i+1] < 1 or strfind(arg10, "Effect") and GetTime() - timestampTable[i+1] < 1.5) then
+						replayFailTexture[i] = ReplayFrame:CreateTexture(nil, "OVERLAY")
+						replayFailTexture[i]:SetPoint("CENTER", replayTexture[i])
+						replayFailTexture[i]:SetWidth(35)
+						replayFailTexture[i]:SetHeight(35)
+						replayFailTexture[i]:SetTexture("Interface\\AddOns\\SpellReplay\\RedCross")
+						replayFont[i] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+						replayFont[i]:SetPoint("CENTER", replayTexture[i], 0, -25)
+						replayFont[i]:SetFont("Fonts\\FRIZQT__.TTF", 8)
+						replayFont[i]:SetJustifyH("CENTER")
+						replayFont[i]:SetText("|cffffa500"..arg12)
 						break
 					end
 				end
@@ -752,49 +761,49 @@ ReplayUpdateFrame:SetScript("OnUpdate", function(self, elapsed)
 	if spellTable ~= nil and #spellTable > 0 then
 		if replaySavedSettings[5] == 1 or replaySavedSettings[5] == nil then
 			for i=table.maxn(spellTable)-1,0,-1 do
-				if _G["ReplayTexture"..i] ~= nil then
-					if _G["ReplayTexture"..(i-1)] ~= nil then
-						if select(4, _G["ReplayTexture"..table.maxn(spellTable)-1]:GetPoint()) < 0 then
+				if replayTexture[i] ~= nil then
+					if replayTexture[i-1] ~= nil then
+						if select(4, replayTexture[table.maxn(spellTable)-1]:GetPoint()) < 0 then
 							movSpeed = 80
-						elseif select(4, _G["ReplayTexture"..table.maxn(spellTable)-1]:GetPoint()) < 120 then
+						elseif select(4, replayTexture[table.maxn(spellTable)-1]:GetPoint()) < 120 then
 							movSpeed = 25
 						end
 					end
-					if select(4, _G["ReplayTexture"..i]:GetPoint()) < 140 then
-						_G["ReplayTexture"..i]:SetPoint("TOPLEFT", select(4, _G["ReplayTexture"..i]:GetPoint()) + movSpeed * elapsed, select(5, _G["ReplayTexture"..i]:GetPoint()))
-					elseif select(4, _G["ReplayTexture"..i]:GetPoint()) < 160 then
-						_G["ReplayTexture"..i]:SetPoint("TOPLEFT", select(4, _G["ReplayTexture"..i]:GetPoint()) + movSpeed * elapsed, select(5, _G["ReplayTexture"..i]:GetPoint()))
-						_G["ReplayTexture"..i]:SetAlpha(abs(160 - select(4, _G["ReplayTexture"..i]:GetPoint())) / 20)
-						if _G["ReplayFont"..i] ~= nil then
-							_G["ReplayFont"..i]:SetAlpha(abs(160 - select(4, _G["ReplayTexture"..i]:GetPoint())) / 20)
+					if select(4, replayTexture[i]:GetPoint()) < 140 then
+						replayTexture[i]:SetPoint("TOPLEFT", select(4, replayTexture[i]:GetPoint()) + movSpeed * elapsed, select(5, replayTexture[i]:GetPoint()))
+					elseif select(4, replayTexture[i]:GetPoint()) < 160 then
+						replayTexture[i]:SetPoint("TOPLEFT", select(4, replayTexture[i]:GetPoint()) + movSpeed * elapsed, select(5, replayTexture[i]:GetPoint()))
+						replayTexture[i]:SetAlpha(abs(160 - select(4, replayTexture[i]:GetPoint())) / 20)
+						if replayFont[i] ~= nil then
+							replayFont[i]:SetAlpha(abs(160 - select(4, replayTexture[i]:GetPoint())) / 20)
 						end
-						if _G["ReplayFailTexture"..i] ~= nil then
-							_G["ReplayFailTexture"..i]:SetAlpha(abs(160 - select(4, _G["ReplayTexture"..i]:GetPoint())) / 20)
+						if replayFailTexture[i] ~= nil then
+							replayFailTexture[i]:SetAlpha(abs(160 - select(4, replayTexture[i]:GetPoint())) / 20)
 						end
-						if _G["ReplayUpperTexture"..i] ~= nil then
-							_G["ReplayUpperTexture"..i]:SetAlpha(abs(160 - select(4, _G["ReplayTexture"..i]:GetPoint())) / 20)
+						if replayUpperTexture[i] ~= nil then
+							replayUpperTexture[i]:SetAlpha(abs(160 - select(4, replayTexture[i]:GetPoint())) / 20)
 						end
-						if _G["ReplayUpperFailTexture"..i] ~= nil then
-							_G["ReplayUpperFailTexture"..i]:SetAlpha(abs(160 - select(4, _G["ReplayTexture"..i]:GetPoint())) / 20)
+						if replayUpperFailTexture[i] ~= nil then
+							replayUpperFailTexture[i]:SetAlpha(abs(160 - select(4, replayTexture[i]:GetPoint())) / 20)
 						end
-					elseif _G["ReplayTexture"..i]:IsShown() then
-						_G["ReplayTexture"..i]:Hide()
-						_G["ReplayTexture"..i] = nil
-						if _G["ReplayFont"..i] ~= nil then
-							_G["ReplayFont"..i]:Hide()
-							_G["ReplayFont"..i] = nil
+					elseif replayTexture[i]:IsShown() then
+						replayTexture[i]:Hide()
+						replayTexture[i] = nil
+						if replayFont[i] ~= nil then
+							replayFont[i]:Hide()
+							replayFont[i] = nil
 						end
-						if _G["ReplayFailTexture"..i] ~= nil then
-							_G["ReplayFailTexture"..i]:Hide()
-							_G["ReplayFailTexture"..i] = nil
+						if replayFailTexture[i] ~= nil then
+							replayFailTexture[i]:Hide()
+							replayFailTexture[i] = nil
 						end
-						if _G["ReplayUpperTexture"..i] ~= nil then
-							_G["ReplayUpperTexture"..i]:Hide()
-							_G["ReplayUpperTexture"..i] = nil
+						if replayUpperTexture[i] ~= nil then
+							replayUpperTexture[i]:Hide()
+							replayUpperTexture[i] = nil
 						end
-						if _G["ReplayUpperFailTexture"..i] ~= nil then
-							_G["ReplayUpperFailTexture"..i]:Hide()
-							_G["ReplayUpperFailTexture"..i] = nil
+						if replayUpperFailTexture[i] ~= nil then
+							replayUpperFailTexture[i]:Hide()
+							replayUpperFailTexture[i] = nil
 						end
 					end
 				else
@@ -803,49 +812,49 @@ ReplayUpdateFrame:SetScript("OnUpdate", function(self, elapsed)
 			end
 		elseif replaySavedSettings[5] == 2 then
 			for i=table.maxn(spellTable)-1,0,-1 do
-				if _G["ReplayTexture"..i] ~= nil then
-					if _G["ReplayTexture"..(i-1)] ~= nil then
-						if select(4, _G["ReplayTexture"..table.maxn(spellTable)-1]:GetPoint()) > 0 then
+				if replayTexture[i] ~= nil then
+					if replayTexture[i-1] ~= nil then
+						if select(4, replayTexture[table.maxn(spellTable)-1]:GetPoint()) > 0 then
 							movSpeed = 80
-						elseif select(4, _G["ReplayTexture"..table.maxn(spellTable)-1]:GetPoint()) > -120 then
+						elseif select(4, replayTexture[table.maxn(spellTable)-1]:GetPoint()) > -120 then
 							movSpeed = 25
 						end
 					end
-					if select(4, _G["ReplayTexture"..i]:GetPoint()) > -140 then
-						_G["ReplayTexture"..i]:SetPoint("TOPLEFT", select(4, _G["ReplayTexture"..i]:GetPoint()) - movSpeed * elapsed, select(5, _G["ReplayTexture"..i]:GetPoint()))
-					elseif select(4, _G["ReplayTexture"..i]:GetPoint()) > -160 then
-						_G["ReplayTexture"..i]:SetPoint("TOPLEFT", select(4, _G["ReplayTexture"..i]:GetPoint()) - movSpeed * elapsed, select(5, _G["ReplayTexture"..i]:GetPoint()))
-						_G["ReplayTexture"..i]:SetAlpha(abs(-160 - select(4, _G["ReplayTexture"..i]:GetPoint())) / 20)
-						if _G["ReplayFont"..i] ~= nil then
-							_G["ReplayFont"..i]:SetAlpha(abs(-160 - select(4, _G["ReplayTexture"..i]:GetPoint())) / 20)
+					if select(4, replayTexture[i]:GetPoint()) > -140 then
+						replayTexture[i]:SetPoint("TOPLEFT", select(4, replayTexture[i]:GetPoint()) - movSpeed * elapsed, select(5, replayTexture[i]:GetPoint()))
+					elseif select(4, replayTexture[i]:GetPoint()) > -160 then
+						replayTexture[i]:SetPoint("TOPLEFT", select(4, replayTexture[i]:GetPoint()) - movSpeed * elapsed, select(5, replayTexture[i]:GetPoint()))
+						replayTexture[i]:SetAlpha(abs(-160 - select(4, replayTexture[i]:GetPoint())) / 20)
+						if replayFont[i] ~= nil then
+							replayFont[i]:SetAlpha(abs(-160 - select(4, replayTexture[i]:GetPoint())) / 20)
 						end
-						if _G["ReplayFailTexture"..i] ~= nil then
-							_G["ReplayFailTexture"..i]:SetAlpha(abs(160 - select(4, _G["ReplayTexture"..i]:GetPoint())) / 20)
+						if replayFailTexture[i] ~= nil then
+							replayFailTexture[i]:SetAlpha(abs(-160 - select(4, replayTexture[i]:GetPoint())) / 20)
 						end
-						if _G["ReplayUpperTexture"..i] ~= nil then
-							_G["ReplayUpperTexture"..i]:SetAlpha(abs(160 - select(4, _G["ReplayTexture"..i]:GetPoint())) / 20)
+						if replayUpperTexture[i] ~= nil then
+							replayUpperTexture[i]:SetAlpha(abs(-160 - select(4, replayTexture[i]:GetPoint())) / 20)
 						end
-						if _G["ReplayUpperFailTexture"..i] ~= nil then
-							_G["ReplayUpperFailTexture"..i]:SetAlpha(abs(160 - select(4, _G["ReplayTexture"..i]:GetPoint())) / 20)
+						if replayUpperFailTexture[i] ~= nil then
+							replayUpperFailTexture[i]:SetAlpha(abs(-160 - select(4, replayTexture[i]:GetPoint())) / 20)
 						end
-					elseif _G["ReplayTexture"..i]:IsShown() then
-						_G["ReplayTexture"..i]:Hide()
-						_G["ReplayTexture"..i] = nil
-						if _G["ReplayFont"..i] ~= nil then
-							_G["ReplayFont"..i]:Hide()
-							_G["ReplayFont"..i] = nil
+					elseif replayTexture[i]:IsShown() then
+						replayTexture[i]:Hide()
+						replayTexture[i] = nil
+						if replayFont[i] ~= nil then
+							replayFont[i]:Hide()
+							replayFont[i] = nil
 						end
-						if _G["ReplayFailTexture"..i] ~= nil then
-							_G["ReplayFailTexture"..i]:Hide()
-							_G["ReplayFailTexture"..i] = nil
+						if replayFailTexture[i] ~= nil then
+							replayFailTexture[i]:Hide()
+							replayFailTexture[i] = nil
 						end
-						if _G["ReplayUpperTexture"..i] ~= nil then
-							_G["ReplayUpperTexture"..i]:Hide()
-							_G["ReplayUpperTexture"..i] = nil
+						if replayUpperTexture[i] ~= nil then
+							replayUpperTexture[i]:Hide()
+							replayUpperTexture[i] = nil
 						end
-						if _G["ReplayUpperFailTexture"..i] ~= nil then
-							_G["ReplayUpperFailTexture"..i]:Hide()
-							_G["ReplayUpperFailTexture"..i] = nil
+						if replayUpperFailTexture[i] ~= nil then
+							replayUpperFailTexture[i]:Hide()
+							replayUpperFailTexture[i] = nil
 						end
 					end
 				else
