@@ -16,6 +16,7 @@ local function GetSpellInfo(a)
 	return unpack(spellcache[a])
 end
 local replayTexture = {}
+local replayRank = {}
 local replayFont = {}
 local replayFailTexture = {}
 local replayUpperTexture = {}
@@ -185,7 +186,6 @@ UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 	directionInitMenu.checked = nil
 	directionInitMenu.func = nil
 	directionInitMenu.text = "Right"
-	directionInitMenu.value = 1
 	directionInitMenu.checked = function()
 		if replaySavedSettings ~= nil and replaySavedSettings[5] == 1 then
 			return true
@@ -229,7 +229,6 @@ UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 	end
 	UIDropDownMenu_AddButton(directionInitMenu)
 	directionInitMenu.text = "Left"
-	directionInitMenu.value = 1
 	directionInitMenu.checked = function()
 		if replaySavedSettings ~= nil and replaySavedSettings[5] == 2 then
 			return true
@@ -275,13 +274,13 @@ UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 end)
 
 local SettingsResistsTitle = ReplaySettingsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-SettingsResistsTitle:SetPoint("TOPLEFT", ReplaySettingsPanel, 15, -170)
+SettingsResistsTitle:SetPoint("TOPLEFT", ReplaySettingsPanel, 15, -220)
 SettingsResistsTitle:SetFont("Fonts\\FRIZQT__.TTF", 10)
 SettingsResistsTitle:SetTextColor(1, 1, 1)
 SettingsResistsTitle:SetText("Resists settings")
 
 local SettingsDisplayResistsButton = CreateFrame("CheckButton", nil, ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
-SettingsDisplayResistsButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 25, -190)
+SettingsDisplayResistsButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 25, -240)
 SettingsDisplayResistsButton:SetHitRectInsets(0, -100, 0, 0)
 SettingsDisplayResistsButton:SetWidth(25)
 SettingsDisplayResistsButton:SetHeight(25)
@@ -314,13 +313,13 @@ SettingsDisplayResistsButton:SetScript("OnClick", function()
 end)
 
 local SettingsDisplayResistsFont = ReplaySettingsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-SettingsDisplayResistsFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 50, -196)
+SettingsDisplayResistsFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 50, -246)
 SettingsDisplayResistsFont:SetFont("Fonts\\FRIZQT__.TTF", 13)
 SettingsDisplayResistsFont:SetTextColor(1, 1, 1)
 SettingsDisplayResistsFont:SetText("Display resists")
 
 local SettingsResistsOnFrameButton = CreateFrame("CheckButton", "SettingsResistsOnFrameButton", ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
-SettingsResistsOnFrameButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 40, -215)
+SettingsResistsOnFrameButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 40, -265)
 SettingsResistsOnFrameButton:SetHitRectInsets(0, -80, 0, 0)
 SettingsResistsOnFrameButton:SetWidth(25)
 SettingsResistsOnFrameButton:SetHeight(25)
@@ -333,13 +332,13 @@ SettingsResistsOnFrameButton:SetScript("OnClick", function()
 end)
 
 local SettingsResistsOnFrameFont = ReplaySettingsPanel:CreateFontString("SettingsResistsOnFrameFont", "ARTWORK", "GameFontNormal")
-SettingsResistsOnFrameFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 65, -220)
+SettingsResistsOnFrameFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 65, -270)
 SettingsResistsOnFrameFont:SetFont("Fonts\\FRIZQT__.TTF", 10)
 SettingsResistsOnFrameFont:SetTextColor(1, 1, 1)
 SettingsResistsOnFrameFont:SetText("On the frame")
 
 local SettingsResistsOnChatFrameButton = CreateFrame("CheckButton", "SettingsResistsOnChatFrameButton", ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
-SettingsResistsOnChatFrameButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 40, -235)
+SettingsResistsOnChatFrameButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 40, -285)
 SettingsResistsOnChatFrameButton:SetHitRectInsets(0, -105, 0, 0)
 SettingsResistsOnChatFrameButton:SetWidth(25)
 SettingsResistsOnChatFrameButton:SetHeight(25)
@@ -352,13 +351,13 @@ SettingsResistsOnChatFrameButton:SetScript("OnClick", function()
 end)
 
 local SettingsResistsOnChatFrameFont = ReplaySettingsPanel:CreateFontString("SettingsResistsOnChatFrameFont", "ARTWORK", "GameFontNormal")
-SettingsResistsOnChatFrameFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 65, -240)
+SettingsResistsOnChatFrameFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 65, -290)
 SettingsResistsOnChatFrameFont:SetFont("Fonts\\FRIZQT__.TTF", 10)
 SettingsResistsOnChatFrameFont:SetTextColor(1, 1, 1)
 SettingsResistsOnChatFrameFont:SetText("On the chat")
 
 local SettingsResistsOnPartyButton = CreateFrame("CheckButton", "SettingsResistsOnPartyButton", ReplaySettingsPanel, "InterfaceOptionsCheckButtonTemplate")
-SettingsResistsOnPartyButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 40, -255)
+SettingsResistsOnPartyButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 40, -305)
 SettingsResistsOnPartyButton:SetHitRectInsets(0, -130, 0, 0)
 SettingsResistsOnPartyButton:SetWidth(25)
 SettingsResistsOnPartyButton:SetHeight(25)
@@ -379,14 +378,14 @@ SettingsResistsOnPartyButton:SetScript("OnClick", function()
 end)
 
 local SettingsResistsOnPartyFont = ReplaySettingsPanel:CreateFontString("SettingsResistsOnPartyFont", "ARTWORK", "GameFontNormal")
-SettingsResistsOnPartyFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 65, -260)
+SettingsResistsOnPartyFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 65, -310)
 SettingsResistsOnPartyFont:SetFont("Fonts\\FRIZQT__.TTF", 10)
 SettingsResistsOnPartyFont:SetTextColor(1, 1, 1)
 SettingsResistsOnPartyFont:SetText("On /party for the spells listed below:")
 
 local SettingsPartySpellsMenu = CreateFrame("Button", "SettingsPartySpellsMenu", ReplaySettingsPanel, "UIDropDownMenuTemplate")
 SettingsPartySpellsMenu:ClearAllPoints()
-SettingsPartySpellsMenu:SetPoint("TOPLEFT", ReplaySettingsPanel, 80, -280)
+SettingsPartySpellsMenu:SetPoint("TOPLEFT", ReplaySettingsPanel, 80, -330)
 if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
 	UIDropDownMenu_SetWidth(SettingsPartySpellsMenu, 140)
 	UIDropDownMenu_JustifyText(SettingsPartySpellsMenu, "CENTER")
@@ -417,7 +416,7 @@ end
 UIDropDownMenu_Initialize(SettingsPartySpellsMenu, partySpellsInitFunc)
 
 local SettingsPartySpellsAddButton = CreateFrame("Button", "SettingsPartySpellsAddButton", ReplaySettingsPanel, "UIPanelButtonTemplate")
-SettingsPartySpellsAddButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 100, -305)
+SettingsPartySpellsAddButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 100, -355)
 SettingsPartySpellsAddButton:SetWidth(75)
 SettingsPartySpellsAddButton:SetHeight(25)
 SettingsPartySpellsAddButton:SetText("Add new")
@@ -448,7 +447,7 @@ SettingsPartySpellsAddButton:SetScript("OnClick", function()
 end)
 
 local SettingsPartySpellsDelButton = CreateFrame("Button", "SettingsPartySpellsDelButton", ReplaySettingsPanel, "UIPanelButtonTemplate")
-SettingsPartySpellsDelButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 175, -305)
+SettingsPartySpellsDelButton:SetPoint("TOPLEFT", ReplaySettingsPanel, 175, -355)
 SettingsPartySpellsDelButton:SetWidth(75)
 SettingsPartySpellsDelButton:SetHeight(25)
 SettingsPartySpellsDelButton:SetText("Delete")
@@ -468,6 +467,85 @@ SettingsPartySpellsDelButton:SetScript("OnClick", function()
 			end
 		end
 	end
+end)
+
+local SettingsSpellRankFont = ReplaySettingsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+SettingsSpellRankFont:SetPoint("TOPLEFT", ReplaySettingsPanel, 200, -160)
+SettingsSpellRankFont:SetFont("Fonts\\FRIZQT__.TTF", 13)
+SettingsSpellRankFont:SetText("Spell rank display")
+
+local SettingsSpellRankMenu = CreateFrame("Button", "SettingsSpellRankMenu", ReplaySettingsPanel, "UIDropDownMenuTemplate")
+SettingsSpellRankMenu:ClearAllPoints()
+SettingsSpellRankMenu:SetPoint("TOPLEFT", ReplaySettingsPanel, 180, -175)
+if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+	UIDropDownMenu_SetWidth(SettingsSpellRankMenu, 140)
+	UIDropDownMenu_JustifyText(SettingsSpellRankMenu, "CENTER")
+else
+	UIDropDownMenu_SetWidth(140, SettingsSpellRankMenu)
+	UIDropDownMenu_JustifyText("CENTER", SettingsSpellRankMenu)
+end
+local spellRankInitMenu = {}
+UIDropDownMenu_Initialize(SettingsSpellRankMenu, function()
+	spellRankInitMenu.checked = nil
+	spellRankInitMenu.func = nil
+	spellRankInitMenu.text = "Rank 1 only"
+	spellRankInitMenu.checked = function()
+		if replaySavedSettings ~= nil and replaySavedSettings[11] == 1 then
+			return true
+		else
+			return nil
+		end
+	end
+	spellRankInitMenu.func = function()
+		if replaySavedSettings ~= nil and replaySavedSettings[11] ~= 1 then
+			replaySavedSettings[11] = 1
+			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+				UIDropDownMenu_SetText(SettingsSpellRankMenu, "Rank 1 only")
+			else
+				UIDropDownMenu_SetText("Rank 1 only", SettingsSpellRankMenu)
+			end
+		end
+	end
+	UIDropDownMenu_AddButton(spellRankInitMenu)
+	spellRankInitMenu.text = "All ranks"
+	spellRankInitMenu.checked = function()
+		if replaySavedSettings ~= nil and replaySavedSettings[11] == 2 then
+			return true
+		else
+			return nil
+		end
+	end
+	spellRankInitMenu.func = function()
+		if replaySavedSettings ~= nil and replaySavedSettings[11] ~= 2 then
+			replaySavedSettings[11] = 2
+			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+				UIDropDownMenu_SetText(SettingsSpellRankMenu, "All ranks")
+			else
+				UIDropDownMenu_SetText("All ranks", SettingsSpellRankMenu)
+			end
+		end
+	end
+	UIDropDownMenu_AddButton(spellRankInitMenu)
+		spellRankInitMenu.text = "None"
+	spellRankInitMenu.checked = function()
+		if replaySavedSettings ~= nil and replaySavedSettings[11] == 3 then
+			return true
+		else
+			return nil
+		end
+	end
+	spellRankInitMenu.func = function()
+		if replaySavedSettings ~= nil and replaySavedSettings[11] ~= 3 then
+			replaySavedSettings[11] = 3
+			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+				UIDropDownMenu_SetText(SettingsSpellRankMenu, "None")
+			else
+				UIDropDownMenu_SetText("None", SettingsSpellRankMenu)
+			end
+		end
+	end
+	UIDropDownMenu_AddButton(spellRankInitMenu)
+
 end)
 
 local total = 0
@@ -526,6 +604,12 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			SettingsResistsOnChatFrameButton:SetChecked()
 			replaySavedSettings[9] = 1
 			SettingsResistsOnPartyButton:SetChecked()
+			replaySavedSettings[11] = 2
+			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+				UIDropDownMenu_SetText(SettingsSpellRankMenu, "All ranks")
+			else
+				UIDropDownMenu_SetText("All ranks", SettingsSpellRankMenu)
+			end
 		else
 			if replaySavedSettings[1] == 0 then
 				ReplayFrame:Hide()
@@ -599,6 +683,25 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				SettingsPartySpellsAddButton:Disable()
 				SettingsPartySpellsDelButton:Disable()
 			end
+			if replaySavedSettings[11] == 1 then
+				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+					UIDropDownMenu_SetText(SettingsSpellRankMenu, "Rank 1 only")
+				else
+					UIDropDownMenu_SetText("Rank 1 only", SettingsSpellRankMenu)
+				end
+			elseif replaySavedSettings[11] == 3 then
+				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+					UIDropDownMenu_SetText(SettingsSpellRankMenu, "None")
+				else
+					UIDropDownMenu_SetText("None", SettingsSpellRankMenu)
+				end
+			else
+				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
+					UIDropDownMenu_SetText(SettingsSpellRankMenu, "All ranks")
+				else
+					UIDropDownMenu_SetText("All ranks", SettingsSpellRankMenu)
+				end
+			end
 		end
 		if displayToPartyTable == nil then
 			displayToPartyTable = {"Cheap Shot", "Kidney Shot"}
@@ -606,8 +709,9 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 		ReplayFrame:UnregisterEvent("PLAYER_LOGIN")
 	end
 
-	if event == "UNIT_SPELLCAST_SUCCEEDED" and arg1 == "player" and arg2 ~= "Attack" and arg2 ~= "Combat Swap (DND)" then
+	if event == "UNIT_SPELLCAST_SUCCEEDED" and arg1 == "player" and arg2 ~= "Attack" and arg2 ~= "Shoot" and arg2 ~= "Auto Shot" and arg2 ~= "Combat Swap (DND)" then
 		local spellName = arg2
+		local spellRank = arg3
 		if select(3, GetSpellInfo(spellName)) == nil then
 			AuraDelayFrame:SetScript("OnUpdate", AuraDelay)
 		end
@@ -665,10 +769,68 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				replayTexture[i]:SetTexture(select(3, GetSpellInfo(spellName)))
 			end
 		end
+		local i = table.maxn(spellTable) - 1
+		if spellRank ~= nil and strfind(spellRank, "(%d+)") and replayTexture[i]:GetTexture() ~= nil and replayTexture[i]:GetTexture() ~= select(3, GetSpellInfo(5940)) then
+			local _, _, spellRankNumber = strfind(spellRank, "(%d+)")
+			if (replaySavedSettings[11] == 1 and spellRankNumber == "1") or replaySavedSettings[11] == 2 then
+				replayRank[i] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+				replayRank[i]:SetPoint("CENTER", replayTexture[i], 0, 28)
+				replayRank[i]:SetFont("Fonts\\FRIZQT__.TTF", 9)
+				replayRank[i]:SetJustifyH("CENTER")
+				replayRank[i]:SetText("|cff107be5R"..spellRankNumber)
+			end
+		end
 	end
 
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		local _, eventType, _, spellCaster, _, _, _, _, spellID = ...
+		if (eventType == "RANGE_DAMAGE" or eventType == "RANGE_MISSED") and spellCaster == UnitName("player") and (arg10 == "Shoot" or arg10 == "Auto Shot") then -- fix for ranged weapons on few servers
+			local spellName = GetItemInfo(GetInventoryItemLink("player", 18))
+			local i = table.maxn(spellTable)
+			if table.maxn(spellTable) == 0 then
+				replayTexture[0] = ReplayFrame:CreateTexture(nil, "ARTWORK")
+				replayTexture[0]:SetPoint("TOPLEFT", 0, 0)
+				replayTexture[0]:SetWidth(40)
+				replayTexture[0]:SetHeight(40)
+				spellTable[1] = spellName
+				timestampTable[1] = GetTime()
+			elseif spellName ~= spellTable[table.maxn(spellTable)] or spellName == spellTable[table.maxn(spellTable)] and GetTime() - timestampTable[table.maxn(timestampTable)] > 0.5 then
+				replayTexture[i] = ReplayFrame:CreateTexture(nil)
+				if replaySavedSettings[5] == 1 or replaySavedSettings[5] == nil then
+					if replayTexture[i-1] == nil or select(4, replayTexture[i-1]:GetPoint()) >= 140 then
+						replayTexture[i]:SetPoint("TOPLEFT", 0, 0)
+					else
+						replayTexture[i]:SetPoint("TOPLEFT", select(4, replayTexture[i-1]:GetPoint()) - 40, select(5, replayTexture[i-1]:GetPoint()))
+					end
+				elseif replaySavedSettings[5] == 2 then
+					if replayTexture[i-1] == nil or select(4, replayTexture[i-1]:GetPoint()) <= -140 then
+						replayTexture[i]:SetPoint("TOPLEFT", 0, 0)
+					else
+						replayTexture[i]:SetPoint("TOPLEFT", select(4, replayTexture[i-1]:GetPoint()) + 40, select(5, replayTexture[i-1]:GetPoint()))
+					end
+				end
+				replayTexture[i]:SetWidth(40)
+				replayTexture[i]:SetHeight(40)
+				spellTable[i+1] = spellName
+				timestampTable[i+1] = GetTime()
+			end
+			replayTexture[i]:SetTexture(select(10, GetItemInfo(spellName)))
+			if eventType == "RANGE_MISSED" and replaySavedSettings[6] == 1 and replaySavedSettings[7] == 1 then
+				replayFailTexture[i] = ReplayFrame:CreateTexture(nil, "OVERLAY")
+				replayFailTexture[i]:SetPoint("CENTER", replayTexture[i])
+				replayFailTexture[i]:SetWidth(35)
+				replayFailTexture[i]:SetHeight(35)
+				replayFailTexture[i]:SetTexture("Interface\\AddOns\\SpellReplay\\RedCross")
+				replayFont[i] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+				replayFont[i]:SetPoint("CENTER", replayTexture[i], 0, -25)
+				replayFont[i]:SetFont("Fonts\\FRIZQT__.TTF", 8)
+				replayFont[i]:SetJustifyH("CENTER")
+				replayFont[i]:SetText("|cffffa500"..arg12)
+				if replaySavedSettings[8] == 1 then
+					DEFAULT_CHAT_FRAME:AddMessage("|cffffa500"..arg10.." failed ("..arg12..")") -- chat frame message for ranged weapons which failed
+				end
+			end
+		end
 		if arg12 == "REFLECT" and arg7 == UnitName("player") then -- Shield Reflect
 			for i=table.maxn(spellTable),0,-1 do
 				if replayTexture[i] ~= nil and replayUpperTexture[i] == nil and select(3, GetSpellInfo(23920)) == replayTexture[i]:GetTexture() then
@@ -774,6 +936,9 @@ ReplayUpdateFrame:SetScript("OnUpdate", function(self, elapsed)
 					elseif select(4, replayTexture[i]:GetPoint()) < 160 then
 						replayTexture[i]:SetPoint("TOPLEFT", select(4, replayTexture[i]:GetPoint()) + movSpeed * elapsed, select(5, replayTexture[i]:GetPoint()))
 						replayTexture[i]:SetAlpha(abs(160 - select(4, replayTexture[i]:GetPoint())) / 20)
+						if replayRank[i] ~= nil then
+							replayRank[i]:SetAlpha(abs(160 - select(4, replayTexture[i]:GetPoint())) / 20)
+						end
 						if replayFont[i] ~= nil then
 							replayFont[i]:SetAlpha(abs(160 - select(4, replayTexture[i]:GetPoint())) / 20)
 						end
@@ -789,6 +954,10 @@ ReplayUpdateFrame:SetScript("OnUpdate", function(self, elapsed)
 					elseif replayTexture[i]:IsShown() then
 						replayTexture[i]:Hide()
 						replayTexture[i] = nil
+						if replayRank[i] ~= nil then
+							replayRank[i]:Hide()
+							replayRank[i] = nil
+						end
 						if replayFont[i] ~= nil then
 							replayFont[i]:Hide()
 							replayFont[i] = nil
@@ -825,6 +994,9 @@ ReplayUpdateFrame:SetScript("OnUpdate", function(self, elapsed)
 					elseif select(4, replayTexture[i]:GetPoint()) > -160 then
 						replayTexture[i]:SetPoint("TOPLEFT", select(4, replayTexture[i]:GetPoint()) - movSpeed * elapsed, select(5, replayTexture[i]:GetPoint()))
 						replayTexture[i]:SetAlpha(abs(-160 - select(4, replayTexture[i]:GetPoint())) / 20)
+						if replayRank[i] ~= nil then
+							replayRank[i]:SetAlpha(abs(-160 - select(4, replayTexture[i]:GetPoint())) / 20)
+						end
 						if replayFont[i] ~= nil then
 							replayFont[i]:SetAlpha(abs(-160 - select(4, replayTexture[i]:GetPoint())) / 20)
 						end
@@ -840,6 +1012,10 @@ ReplayUpdateFrame:SetScript("OnUpdate", function(self, elapsed)
 					elseif replayTexture[i]:IsShown() then
 						replayTexture[i]:Hide()
 						replayTexture[i] = nil
+						if replayRank[i] ~= nil then
+							replayRank[i]:Hide()
+							replayRank[i] = nil
+						end
 						if replayFont[i] ~= nil then
 							replayFont[i]:Hide()
 							replayFont[i] = nil
