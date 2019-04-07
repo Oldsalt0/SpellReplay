@@ -1,25 +1,26 @@
 # SpellReplay
 <p align="left">
-  <img src="http://i.gyazo.com/fe011a8a2679b2eddd2d40db4debe4bc.gif" width="300"/>
-  <img src="http://i.imgur.com/ZBhi9UP.png"/>
+  <img src="http://i.gyazo.com/0a391b66819759c84efa09cf42c9fd9e.gif"/>
+  <img src="http://i.gyazo.com/14e9e28b72e584a99f3c87391b1ba365.gif"/>
 </p>
 
 SpellReplay is a TBC/WotLK AddOn that was originally made for <a href="https://www.youtube.com/user/mopalol">Sbkzor</a> in order to backport a retail addon widely used by streamers called TrufiGCD. The AddOn scrolls smoothly and speeds up when multiple spells are used at the same time, making it easier to highlight good plays.
    
-It has been built from scratch to also include:
-- Missed spells (announced on the frame, in chat and /party for the important ones)
-- Spell ranks (you can choose to display them no matter which rank it is, only if it's a rank 1 or never)
-- Applied poison from Shiv
-- First reflected spell from Spell Reflection
-- First resisted spell from Cloak of Shadows
-- Scaling modification
-- Scrolling direction (Right or left)
+It has been built from scratch to also include and display:
+- Missed spells
+- White hits
+- Spell rank
+- Spell damage/healing
+- Mana gains
+- Pet spells
+- Poisons applied (or resisted) on Shiv  
+... and much more.  
 
-You can access settings from Interface > AddOns > SpellReplay.
+The additions mentioned above are adjustable. You can also rescale the frame, change its scrolling direction, speed (ie. slower scrolling while casting) and modify the number of spells to display.  
+Settings are accessible from Interface > AddOns > SpellReplay or by simply right-clicking on the background square.
 
 ## How to install
 - Click on the green button "Clone or download"
 - Select Download ZIP
-- Extract this .zip file under Your_WoW_Directory\Interface\AddOns\
+- Extract this .zip file under 'Your_WoW_Directory\Interface\AddOns\\'
 - Remove the "-master" from the folder name
-- Enable it from the AddOns list on the Character Selection (it is disabled by default)
