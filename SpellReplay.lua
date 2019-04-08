@@ -27,7 +27,7 @@ ReplayButton:SetScript("OnMouseDown", function(self, button)
 			ReplayFrame:StartMoving()
 		end
 	end
-end) 
+end)
 ReplayButton:SetScript("OnMouseUp", function(self, button) if replaySavedSettings[12] == 0 then ReplayFrame:StopMovingOrSizing() end end)
 ReplayButton:SetScript("OnEnter", function() if replaySavedSettings[13] == 0 then ReplayBackground:Show() end end)
 ReplayButton:SetScript("OnLeave", function() if replaySavedSettings[13] == 0 then ReplayBackground:Hide() end end)
@@ -1830,7 +1830,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 							if replaySavedSettings[15] == 1 and select(4, replayTexture[i-1]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i-1]:GetPoint()) > 0 then
 								replayDamage[i-1]:Hide()
 							end
-							if arg17 == 1 then
+							if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg18 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg17 == 1 then
 								replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
 								replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 12)
 								replayDamage[i-1]:SetText("|cffffff00"..arg12)
@@ -1949,7 +1949,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 							if replaySavedSettings[15] == 1 and select(4, replayTexture[i-1]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i-1]:GetPoint()) > 0 then
 								replayDamage[i-1]:Hide()
 							end
-							if arg17 == 1 then
+							if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg18 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg17 == 1 then
 								replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
 								replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 12)
 								replayDamage[i-1]:SetText("|cffffff00"..arg12)
@@ -2001,7 +2001,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			if eventType == "RANGE_DAMAGE" or eventType == "RANGE_MISSED" then
 				spellName = GetItemInfo(GetInventoryItemLink("player", 18))
 			else
-				spellName = "Attack"
+				spellName = GetItemInfo(GetInventoryItemLink("player", 16))
 			end
 			local i = table.maxn(spellTable)
 			if table.maxn(spellTable) == 0 then
@@ -2042,16 +2042,12 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			end
 			if replayTexture[i] ~= nil then
 				if eventType == "SWING_DAMAGE" or eventType == "SWING_MISSED" then
-					if select(2, UnitClass("player")) == "DRUID" then
-						if GetShapeshiftForm() == 3 then
-							replayTexture[i]:SetTexture("Interface\\Icons\\Ability_Druid_CatFormAttack")
-						elseif GetShapeshiftForm() == 1 then
-							replayTexture[i]:SetTexture("Interface\\Icons\\Ability_Druid_Swipe")
-						else
-							replayTexture[i]:SetTexture(select(10, GetItemInfo(GetInventoryItemLink("player", 16))))
-						end
+					if select(2, UnitClass("player")) == "DRUID" and GetShapeshiftForm() == 3 then
+						replayTexture[i]:SetTexture("Interface\\Icons\\Ability_Druid_CatFormAttack")
+					elseif select(2, UnitClass("player")) == "DRUID" and GetShapeshiftForm() == 1 then
+						replayTexture[i]:SetTexture("Interface\\Icons\\Ability_Druid_Swipe")
 					else
-						replayTexture[i]:SetTexture(select(3, GetSpellInfo("Attack")))
+						replayTexture[i]:SetTexture(select(10, GetItemInfo(GetInventoryItemLink("player", 16))))
 					end
 				else
 					replayTexture[i]:SetTexture(select(10, GetItemInfo(GetInventoryItemLink("player", 18))))
@@ -2083,7 +2079,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				if replaySavedSettings[15] == 1 and select(4, replayTexture[i]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i]:GetPoint()) > 0 then
 					replayDamage[i]:Hide()
 				end
-				if arg14 == 1 then
+				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg15 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg14 == 1 then
 					replayDamage[i]:SetPoint("CENTER", replayTexture[i], 0, -26)
 					replayDamage[i]:SetFont("Fonts\\FRIZQT__.TTF", 12)
 					replayDamage[i]:SetText("|cffffffff"..arg9)
@@ -2098,7 +2094,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				if replaySavedSettings[15] == 1 and select(4, replayTexture[i]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i]:GetPoint()) > 0 then
 					replayDamage[i]:Hide()
 				end
-				if arg17 == 1 then
+				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg18 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg17 == 1 then
 					replayDamage[i]:SetPoint("CENTER", replayTexture[i], 0, -26)
 					replayDamage[i]:SetFont("Fonts\\FRIZQT__.TTF", 12)
 					replayDamage[i]:SetText("|cffffffff"..arg12)
@@ -2118,7 +2114,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 						replayDamage[i-1]:Hide()
 					end
 					if eventType == "SPELL_DAMAGE" then
-						if arg17 == 1 then
+						if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg18 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg17 == 1 then
 							replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
 							replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 12)
 							replayDamage[i-1]:SetText("|cffffff00"..arg12)
@@ -2127,7 +2123,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 							replayDamage[i-1]:SetText("|cffffff00"..arg12)
 						end
 					else
-						if arg13 ~= nil and arg13 == 1 then
+						if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg15 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg13 ~= nil and arg13 == 1 then
 							replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
 							replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 12)
 							replayDamage[i-1]:SetText("|cff00b200+"..arg12)
