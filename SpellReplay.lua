@@ -1763,7 +1763,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		local _, eventType, sourceGUID, spellCaster, _, _, _, _, spellID = ...
-		if sourceGUID == UnitGUID("pet") and replaySavedSettings[36] == 1 or eventType == "SPELL_AURA_APPLIED" and arg10 == "Seduction" and sourceGUID == "0x0000000000000000" then -- pet spells
+		if sourceGUID == UnitGUID("pet") and replaySavedSettings[36] == 1 or eventType == "SPELL_AURA_APPLIED" and arg10 == "Seduction" and UnitChannelInfo("pet") and strfind(select(4, UnitChannelInfo("pet")), "Spell_Shadow_MindSteal") then -- pet spells
 			if (eventType == "SPELL_DAMAGE" or eventType == "SPELL_MISSED") and select(2, UnitClass("player")) == "MAGE" or eventType == "SPELL_CAST_SUCCESS" and select(2, UnitClass("player")) ~= "MAGE" or eventType == "SPELL_AURA_APPLIED" and arg10 == "Seduction" and sourceGUID == "0x0000000000000000" then
 				local spellName = GetSpellInfo(spellID)
 				local i = table.maxn(spellTable)
