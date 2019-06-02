@@ -762,13 +762,14 @@ local displayToPartySelection = 0
 local function DisplayToPartyListing()
 	for i,value in pairs(displayToPartyTable) do
 		if _G["SettingsListContentButton"..i] == nil then
-			_G["SettingsListContentButton"..i] = CreateFrame("Button", "SettingsListContentButton"..i, SettingsListContentFrame, "InterfaceOptionsButtonTemplate")
+			_G["SettingsListContentButton"..i] = CreateFrame("Button", "SettingsListContentButton"..i, SettingsListContentFrame, "FriendsFrameIgnoreButtonTemplate")
 			_G["SettingsListContentButton"..i]:SetPoint("TOPLEFT", 0, -20 * (i-1))
 			_G["SettingsListContentButton"..i]:SetWidth(140)
 			_G["SettingsListContentButton"..i]:SetHeight(20)
-			_G["SettingsListContentButton"..i]:SetTextColor(1, 1, 1)
-			_G["SettingsListContentButton"..i]:SetFont("Fonts\\FRIZQT__.TTF", 10)
-			_G["SettingsListContentButton"..i.."Toggle"]:Hide()
+			_G["SettingsListContentFont"..i] = SettingsListContentFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+			_G["SettingsListContentFont"..i]:SetPoint("LEFT", _G["SettingsListContentButton"..i], 12, 0)
+			_G["SettingsListContentFont"..i]:SetTextColor(1, 1, 1)
+			_G["SettingsListContentButton"..i]:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
 			_G["SettingsListContentButton"..i]:SetScript("OnClick", function()
 				for k=1,#displayToPartyTable do
 					if k == tonumber(select(3, strfind(_G["SettingsListContentButton"..i]:GetName(), "(%d+)"))) then
@@ -780,7 +781,7 @@ local function DisplayToPartyListing()
 				end
 			end)
 		end
-		_G["SettingsListContentButton"..i]:SetText("    "..value)
+		_G["SettingsListContentFont"..i]:SetText(value)
 		_G["SettingsListContentButton"..i]:Show()
 		if i == #displayToPartyTable then
 			SettingsListScrollBar:SetMinMaxValues(0, max(0,(i-7)*20))
@@ -842,7 +843,7 @@ DisplayToPartyDelButton:SetScript("OnClick", function()
 	if displayToPartySelection ~= 0 and displayToPartyTable[displayToPartySelection] ~= nil then
 		_G["SettingsListContentButton"..displayToPartySelection]:UnlockHighlight()
 		for i,value in pairs(displayToPartyTable) do
-			_G["SettingsListContentButton"..i]:SetText("")
+			_G["SettingsListContentFont"..i]:SetText("")
 			_G["SettingsListContentButton"..i]:Hide()
 		end
 		tremove(displayToPartyTable, displayToPartySelection)
