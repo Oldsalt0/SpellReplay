@@ -1712,7 +1712,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 		end
 		if table.maxn(spellTable) > 0 and replayTexture[table.maxn(spellTable) - 1]:GetTexture() == nil then
 			local i = table.maxn(spellTable) - 1
-			if spellName == "PvP Trinket" then
+			if spellName == GetSpellInfo(42292) then -- PvP trinket
 				if UnitFactionGroup("player") == "Alliance" then
 					replayTexture[i]:SetTexture("Interface\\Icons\\INV_Jewelry_TrinketPVP_01")
 				else
@@ -1722,25 +1722,25 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				replayTexture[i]:SetTexture(select(3, GetSpellInfo(spellName)))
 			elseif select(10, GetItemInfo(spellName)) ~= nil then
 				replayTexture[i]:SetTexture(select(10, GetItemInfo(spellName)))
-			elseif strfind(spellName, "Faerie Fire") then
+			elseif spellName == GetSpellInfo(770) or spellName == GetSpellInfo(16857) then -- Faerie fire
 				replayTexture[i]:SetTexture("Interface\\Icons\\Spell_Nature_FaerieFire")
-			elseif strfind(spellName, "Mangle") then
+			elseif spellName == GetSpellInfo(33878) or spellName == GetSpellInfo(33876) then -- Mangle
 				replayTexture[i]:SetTexture("Interface\\Icons\\Ability_Druid_Mangle2")
-			elseif spellName == "Restore Mana" then -- Mana pots
+			elseif spellName == GetSpellInfo(437) then -- Mana potions
 				replayTexture[i]:SetTexture("Interface\\Icons\\INV_Potion_137")
-			elseif spellName == "Healing Potion" then
+			elseif spellName == GetSpellInfo(439) then -- Healing potions
 				replayTexture[i]:SetTexture("Interface\\Icons\\INV_Potion_131")
-			elseif spellName == "Refreshment" then
+			elseif spellName == GetSpellInfo(44166) then -- Refreshment table food and drink
 				replayTexture[i]:SetTexture("Interface\\Icons\\INV_Misc_Food_100")
-			elseif spellName == "Drink" then
+			elseif spellName == GetSpellInfo(27089) then -- Drink
 				replayTexture[i]:SetTexture("Interface\\Icons\\INV_Drink_07")
-			elseif spellName == "Food" then
+			elseif spellName == GetSpellInfo(18234) then -- Food
 				replayTexture[i]:SetTexture("Interface\\Icons\\INV_Misc_Fork&Knife")
-			elseif spellName == "Replenish Mana" then -- Mage gems
+			elseif spellName == GetSpellInfo(10052) then -- Mage gems
 				replayTexture[i]:SetTexture("Interface\\Icons\\INV_Misc_Gem_Stone_01")
-			elseif spellName == "Master Spellstone" then
+			elseif spellName == GetSpellInfo(28170) then -- Spellstone
 				replayTexture[i]:SetTexture("Interface\\Icons\\INV_Misc_Gem_Sapphire_01")
-			elseif spellName == "Demonic Rune" then
+			elseif spellName == GetSpellInfo(16666) then -- Demonic rune
 				replayTexture[i]:SetTexture("Interface\\Icons\\INV_Misc_Rune_04")
 			else
 				AuraDelayFrame:SetScript("OnUpdate", AuraDelay)
