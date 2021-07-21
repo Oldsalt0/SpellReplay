@@ -6,7 +6,7 @@
 
 This is a fork of SpellReplay with fixes to work for Burning Crusade Classic. Big thanks to Oldsalt0 for the original work.
 
-Current Status: Work in Progress (most things work)
+Current Status: Testing (all features should work, please report any bugs you encounter)
 
 Original Description:
 
