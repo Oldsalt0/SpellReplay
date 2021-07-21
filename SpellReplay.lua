@@ -298,7 +298,6 @@ end
 
 local fonts, newFonts = LibSharedMedia:List("font"), {}
 for k, v in pairs(fonts) do
-	print(v)
 	newFonts[v] = v
 end
 
@@ -1815,6 +1814,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 		local _, eventType, _, sourceGUID, spellCaster, _, _, _, _, spellID, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23 = CombatLogGetCurrentEventInfo()
 		if sourceGUID == UnitGUID("pet") and replaySavedSettings[36] == 1 or eventType == "SPELL_AURA_APPLIED" and arg10 == "Seduction" and UnitChannelInfo("pet") and strfind(select(4, UnitChannelInfo("pet")), "Spell_Shadow_MindSteal") then -- pet spells
 			if (eventType == "SPELL_DAMAGE" or eventType == "SPELL_MISSED") and select(2, UnitClass("player")) == "MAGE" or eventType == "SPELL_CAST_SUCCESS" and select(2, UnitClass("player")) ~= "MAGE" or eventType == "SPELL_AURA_APPLIED" and arg10 == "Seduction" and sourceGUID == "0x0000000000000000" then
+				spellID = arg12
 				local spellName = GetSpellInfo(spellID)
 				local i = table.maxn(spellTable)
 				if table.maxn(spellTable) == 0 then
@@ -1873,7 +1873,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				local i = table.maxn(spellTable) - 1
 				if eventType == "SPELL_DAMAGE" and replaySavedSettings[33] ~= 0 then
 					for i=table.maxn(spellTable),0,-1 do
-						if arg10 == spellTable[i] and replayTexture[i-1] ~= nil and replayDamage[i-1] == nil and replayFont[i-1] == nil then
+						if arg13 == spellTable[i] and replayTexture[i-1] ~= nil and replayDamage[i-1] == nil and replayFont[i-1] == nil then
 							replayDamage[i-1] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 							replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -25)
 							replayDamage[i-1]:SetJustifyH("CENTER")
@@ -1883,15 +1883,15 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 							if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg18 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg17 == 1 then
 								replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
 								replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 12)
-								replayDamage[i-1]:SetText("|cffffff00"..arg12)
+								replayDamage[i-1]:SetText("|cffffff00"..arg15)
 							elseif replaySavedSettings[33] ~= 2 then
 								replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
-								replayDamage[i-1]:SetText("|cffffff00"..arg12)
+								replayDamage[i-1]:SetText("|cffffff00"..arg15)
 							end
 							break
 						end
 					end
-				elseif eventType == "SPELL_MISSED" and arg12 ~= "ABSORB" then
+				elseif eventType == "SPELL_MISSED" and arg15 ~= "ABSORB" then
 					if replaySavedSettings[21] == 1 then
 						for i=table.maxn(spellTable),0,-1 do
 							if replayTexture[i-1] ~= nil and select(3, GetSpellInfo(spellID)) == replayTexture[i-1]:GetTexture() and replayDamage[i-1] == nil and replayFont[i-1] == nil then
@@ -1904,7 +1904,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 								replayFont[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
 								replayFont[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 8)
 								replayFont[i-1]:SetJustifyH("CENTER")
-								replayFont[i-1]:SetText("|cffffa500"..arg12)
+								replayFont[i-1]:SetText("|cffffa500"..arg15)
 								if replaySavedSettings[15] == 1 and select(4, replayTexture[i-1]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i-1]:GetPoint()) > 0 then
 									replayFailTexture[i-1]:Hide()
 									replayFont[i-1]:Hide()
