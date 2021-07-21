@@ -1,5 +1,5 @@
-﻿-- SpellReplay (TBC/WotLK)
-
+﻿-- SpellReplay (TBC Classic)
+local LibSharedMedia = LibStub("LibSharedMedia-3.0")
 local ReplayFrame = CreateFrame("Frame", "ReplayFrame", UIParent)
 ReplayFrame:SetPoint("CENTER")
 ReplayFrame:SetWidth(40)
@@ -244,6 +244,63 @@ SettingsDirectionMenu:ClearAllPoints()
 SettingsDirectionMenu:SetPoint("TOPLEFT", ReplaySettingsGeneralPanel, 180, -120)
 UIDropDownMenu_SetWidth(SettingsDirectionMenu, 140)
 UIDropDownMenu_JustifyText(SettingsDirectionMenu, "CENTER")
+
+--- Opts:
+---     name (string): Name of the dropdown (lowercase)
+---     parent (Frame): Parent frame of the dropdown.
+---     items (Table): String table of the dropdown options.
+---     defaultVal (String): String value for the dropdown to default to (empty otherwise).
+---     changeFunc (Function): A custom function to be called, after selecting a dropdown option.
+local function createDropdown(opts)
+    local dropdown_name = '$parent_' .. opts['name'] .. '_dropdown'
+    local menu_items = opts['items'] or {}
+    local title_text = opts['title'] or ''
+    local dropdown_width = 0
+    local default_val = opts['defaultVal'] or ''
+    local change_func = opts['changeFunc'] or function (dropdown_val) end
+
+    local dropdown = CreateFrame("Frame", dropdown_name, opts['parent'], 'UIDropDownMenuTemplate')
+    local dd_title = dropdown:CreateFontString(dropdown, 'OVERLAY', 'GameFontNormal')
+    dd_title:SetPoint("TOPLEFT", 20, 10)
+
+    for _, item in pairs(menu_items) do -- Sets the dropdown width to the largest item string width.
+        dd_title:SetText(item)
+        local text_width = dd_title:GetStringWidth() + 20
+        if text_width > dropdown_width then
+            dropdown_width = text_width
+        end
+    end
+
+    UIDropDownMenu_SetWidth(dropdown, dropdown_width)
+    UIDropDownMenu_SetText(dropdown, default_val)
+    dd_title:SetText(title_text)
+
+    UIDropDownMenu_Initialize(dropdown, function(self, level, _)
+        local info = UIDropDownMenu_CreateInfo()
+        for key, val in pairs(menu_items) do
+            info.text = val;
+            info.checked = false
+            info.menuList= key
+            info.hasArrow = false
+            info.func = function(b)
+                UIDropDownMenu_SetSelectedValue(dropdown, b.value, b.value)
+                UIDropDownMenu_SetText(dropdown, b.value)
+                b.checked = true
+                change_func(dropdown, b.value)
+            end
+            UIDropDownMenu_AddButton(info)
+        end
+    end)
+
+    return dropdown
+end
+
+
+local fonts, newFonts = LibSharedMedia:List("font"), {}
+for k, v in pairs(fonts) do
+	print(v)
+	newFonts[v] = v
+end
 
 local directionInitMenu = {}
 UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
@@ -1442,6 +1499,25 @@ ReplayFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 ReplayFrame:RegisterEvent("PLAYER_LOGIN")
 ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 	if event == "PLAYER_LOGIN" then
+		if replaySavedSettings[25] == nil then
+			replaySavedSettings[25] = "Arial Narrow"
+		end
+		local raid_opts = {
+			['name']='font',
+			['parent']=ReplaySettingsGeneralPanel,
+			['title']='Font Selection',
+			['items']= newFonts,
+			['defaultVal']=replaySavedSettings[25], 
+			['changeFunc']=function(dropdown_frame, dropdown_val)
+				replaySavedSettings[25] = dropdown_val -- Custom logic goes here, when you change your dropdown option.
+			end
+		}
+		
+		fontDD = createDropdown(raid_opts)
+		-- Don't forget to set your dropdown's points, we don't do this in the creation method for simplicities sake.
+		fontDD:SetPoint("TOPLEFT", ReplaySettingsGeneralPanel, 180, -240);
+		systemFont = replaySavedSettings[25]
+	
 		if replaySavedSettings == nil or replaySavedSettings[1] ~= nil then
 			replaySavedSettings = {}
 			replaySavedSettings[11] = 1
@@ -1723,7 +1799,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			if (replaySavedSettings[31] == 2 and spellRankNumber == "1") or replaySavedSettings[31] == 1 then
 				replayRank[i] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 				replayRank[i]:SetPoint("CENTER", replayTexture[i], 0, 28)
-				replayRank[i]:SetFont("Fonts\\FRIZQT__.TTF", 9)
+				replayRank[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
 				replayRank[i]:SetJustifyH("CENTER")
 				replayRank[i]:SetText("|cff107be5R"..spellRankNumber)
 				replayRank[i]:Hide()
@@ -1752,7 +1828,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 					end
 					replayRank[0] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 					replayRank[0]:SetPoint("CENTER", replayTexture[0], 0, 28)
-					replayRank[0]:SetFont("Fonts\\FRIZQT__.TTF", 9)
+					replayRank[0]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
 					replayRank[0]:SetJustifyH("CENTER")
 					replayRank[0]:SetText("|cff2e8b57PET")
 					if replaySavedSettings[15] == 1 and select(4, replayTexture[0]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[0]:GetPoint()) > 0 then
@@ -1784,7 +1860,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 					end
 					replayRank[i] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 					replayRank[i]:SetPoint("CENTER", replayTexture[i], 0, 28)
-					replayRank[i]:SetFont("Fonts\\FRIZQT__.TTF", 9)
+					replayRank[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
 					replayRank[i]:SetJustifyH("CENTER")
 					replayRank[i]:SetText("|cff2e8b57PET")
 					if replaySavedSettings[15] == 1 and select(4, replayTexture[i]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i]:GetPoint()) > 0 then
@@ -1806,10 +1882,10 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 							end
 							if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg18 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg17 == 1 then
 								replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
-								replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 12)
+								replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 12)
 								replayDamage[i-1]:SetText("|cffffff00"..arg12)
 							elseif replaySavedSettings[33] ~= 2 then
-								replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 9)
+								replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
 								replayDamage[i-1]:SetText("|cffffff00"..arg12)
 							end
 							break
@@ -1826,7 +1902,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 								replayFailTexture[i-1]:SetTexture("Interface\\AddOns\\SpellReplay\\RedCross")
 								replayFont[i-1] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 								replayFont[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
-								replayFont[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 8)
+								replayFont[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 8)
 								replayFont[i-1]:SetJustifyH("CENTER")
 								replayFont[i-1]:SetText("|cffffa500"..arg12)
 								if replaySavedSettings[15] == 1 and select(4, replayTexture[i-1]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i-1]:GetPoint()) > 0 then
@@ -1864,7 +1940,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 					end
 					replayRank[0] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 					replayRank[0]:SetPoint("CENTER", replayTexture[0], 0, 28)
-					replayRank[0]:SetFont("Fonts\\FRIZQT__.TTF", 9)
+					replayRank[0]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
 					replayRank[0]:SetJustifyH("CENTER")
 					replayRank[0]:SetText("|cff2e8b57PET")
 					if replaySavedSettings[15] == 1 and select(4, replayTexture[0]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[0]:GetPoint()) > 0 then
@@ -1901,7 +1977,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 							end
 							replayRank[i] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 							replayRank[i]:SetPoint("CENTER", replayTexture[i], 0, 28)
-							replayRank[i]:SetFont("Fonts\\FRIZQT__.TTF", 9)
+							replayRank[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
 							replayRank[i]:SetJustifyH("CENTER")
 							replayRank[i]:SetText("|cff2e8b57PET")
 							if replaySavedSettings[15] == 1 and select(4, replayTexture[i]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i]:GetPoint()) > 0 then
@@ -1925,10 +2001,10 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 							end
 							if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg18 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg17 == 1 then
 								replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
-								replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 12)
+								replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 12)
 								replayDamage[i-1]:SetText("|cffffff00"..arg12)
 							elseif replaySavedSettings[33] ~= 2 then
-								replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 9)
+								replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
 								replayDamage[i-1]:SetText("|cffffff00"..arg12)
 							end
 							break
@@ -1945,7 +2021,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 								replayFailTexture[i-1]:SetTexture("Interface\\AddOns\\SpellReplay\\RedCross")
 								replayFont[i-1] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 								replayFont[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
-								replayFont[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 8)
+								replayFont[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 8)
 								replayFont[i-1]:SetJustifyH("CENTER")
 								replayFont[i-1]:SetText("|cffffa500"..arg12)
 								if replaySavedSettings[15] == 1 and select(4, replayTexture[i-1]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i-1]:GetPoint()) > 0 then
@@ -2035,7 +2111,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				replayFailTexture[i]:SetTexture("Interface\\AddOns\\SpellReplay\\RedCross")
 				replayFont[i] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 				replayFont[i]:SetPoint("CENTER", replayTexture[i], 0, -26)
-				replayFont[i]:SetFont("Fonts\\FRIZQT__.TTF", 8)
+				replayFont[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 8)
 				replayFont[i]:SetJustifyH("CENTER")
 				if replaySavedSettings[15] == 1 and select(4, replayTexture[i]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i]:GetPoint()) > 0 then
 					replayFailTexture[i]:Hide()
@@ -2055,10 +2131,10 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				end
 				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg15 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg14 == 1 then
 					replayDamage[i]:SetPoint("CENTER", replayTexture[i], 0, -26)
-					replayDamage[i]:SetFont("Fonts\\FRIZQT__.TTF", 12)
+					replayDamage[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 12)
 					replayDamage[i]:SetText("|cffffffff"..arg12)
 				elseif replaySavedSettings[33] ~= 2 then
-					replayDamage[i]:SetFont("Fonts\\FRIZQT__.TTF", 9)
+					replayDamage[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
 					replayDamage[i]:SetText("|cffffffff"..arg12)
 				end
 			elseif eventType == "RANGE_DAMAGE" and arg12 ~= nil and replayDamage[i] == nil and replayTexture[i] ~= nil and replaySavedSettings[33] ~= 0 then
@@ -2070,10 +2146,10 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				end
 				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg18 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg17 == 1 then
 					replayDamage[i]:SetPoint("CENTER", replayTexture[i], 0, -26)
-					replayDamage[i]:SetFont("Fonts\\FRIZQT__.TTF", 12)
+					replayDamage[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 12)
 					replayDamage[i]:SetText("|cffffffff"..arg12)
 				elseif replaySavedSettings[33] ~= 2 then
-					replayDamage[i]:SetFont("Fonts\\FRIZQT__.TTF", 9)
+					replayDamage[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
 					replayDamage[i]:SetText("|cffffffff"..arg12)
 				end
 			end
@@ -2090,19 +2166,19 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 					if eventType == "SPELL_DAMAGE" then
 						if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg18 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg17 == 1 then
 							replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
-							replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 12)
+							replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 12)
 							replayDamage[i-1]:SetText("|cffffff00"..arg15)
 						elseif replaySavedSettings[33] ~= 2 then
-							replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 9)
+							replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
 							replayDamage[i-1]:SetText("|cffffff00"..arg15)
 						end
 					else
 						if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg15 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg13 ~= nil and arg13 == 1 then
 							replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
-							replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 12)
+							replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 12)
 							replayDamage[i-1]:SetText("|cff00b200+"..arg15)
 						elseif replaySavedSettings[34] ~= 2 then
-							replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 9)
+							replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
 							replayDamage[i-1]:SetText("|cff00b200+"..arg15)
 						end
 					end
@@ -2116,7 +2192,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				replayDamage[i-1] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 				replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -25)
 				replayDamage[i-1]:SetJustifyH("CENTER")
-				replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 9)
+				replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
 				replayDamage[i-1]:SetText("|cff0080ff+"..arg12)
 				if replaySavedSettings[15] == 1 and select(4, replayTexture[i-1]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i-1]:GetPoint()) > 0 then
 					replayDamage[i-1]:Hide()
@@ -2200,7 +2276,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 						replayFailTexture[i]:SetTexture("Interface\\AddOns\\SpellReplay\\RedCross")
 						replayFont[i] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 						replayFont[i]:SetPoint("CENTER", replayTexture[i], 0, -26)
-						replayFont[i]:SetFont("Fonts\\FRIZQT__.TTF", 8)
+						replayFont[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 8)
 						replayFont[i]:SetJustifyH("CENTER")
 						replayFont[i]:SetText("|cffffa500"..arg12)
 						if replaySavedSettings[15] == 1 and select(4, replayTexture[i]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i]:GetPoint()) > 0 then
