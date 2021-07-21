@@ -8,6 +8,10 @@ This is a fork of SpellReplay with fixes to work for Burning Crusade Classic. Bi
 
 Current Status: Testing (all features should work, please report any bugs you encounter)
 
+Added Features:
+
+- Custom Font Selection (SharedMediaLib)
+
 Original Description:
 
 SpellReplay is a TBC/WotLK AddOn that was originally made for <a href="https://www.youtube.com/user/mopalol">Sbkzor</a> in order to backport a retail addon widely used by streamers called TrufiGCD. The AddOn scrolls smoothly and speeds up when multiple spells are used at the same time, making it easier to highlight good plays.
