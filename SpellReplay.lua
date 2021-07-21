@@ -9,12 +9,9 @@ ReplayFrame:SetMovable(true)
 
 local ReplayBackground = ReplayFrame:CreateTexture(nil, "BACKGROUND")
 ReplayBackground:SetAllPoints()
-ReplayBackground:SetTexture(0, 0, 0, 0.15)
+ReplayBackground:SetColorTexture(0, 0, 0, 0.15)
 
-local InterfaceOptionsFrame_OpenToFrame = InterfaceOptionsFrame_OpenToFrame
-if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
-	InterfaceOptionsFrame_OpenToFrame = InterfaceOptionsFrame_OpenToCategory
-end
+local InterfaceOptionsFrame_OpenToFrame = InterfaceOptionsFrame_OpenToFrame	InterfaceOptionsFrame_OpenToFrame = InterfaceOptionsFrame_OpenToCategory
 local ReplayButton = CreateFrame("Button", "ReplayButton", ReplayFrame)
 ReplayButton:SetAllPoints()
 ReplayButton:SetScript("OnMouseDown", function(self, button)
@@ -244,13 +241,9 @@ SettingsDirectionFont:SetText("Scrolling direction")
 local SettingsDirectionMenu = CreateFrame("Button", "SettingsDirectionMenu", ReplaySettingsGeneralPanel, "UIDropDownMenuTemplate")
 SettingsDirectionMenu:ClearAllPoints()
 SettingsDirectionMenu:SetPoint("TOPLEFT", ReplaySettingsGeneralPanel, 180, -120)
-if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
-	UIDropDownMenu_SetWidth(SettingsDirectionMenu, 140)
-	UIDropDownMenu_JustifyText(SettingsDirectionMenu, "CENTER")
-else
-	UIDropDownMenu_SetWidth(140, SettingsDirectionMenu)
-	UIDropDownMenu_JustifyText("CENTER", SettingsDirectionMenu)
-end
+UIDropDownMenu_SetWidth(SettingsDirectionMenu, 140)
+UIDropDownMenu_JustifyText(SettingsDirectionMenu, "CENTER")
+
 local directionInitMenu = {}
 UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 	directionInitMenu.checked = nil
@@ -266,11 +259,7 @@ UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 	directionInitMenu.func = function()
 		if replaySavedSettings ~= nil and replaySavedSettings[15] ~= 1 then
 			replaySavedSettings[15] = 1
-			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
-				UIDropDownMenu_SetText(SettingsDirectionMenu, "Right")
-			else
-				UIDropDownMenu_SetText("Right", SettingsDirectionMenu)
-			end
+			UIDropDownMenu_SetText(SettingsDirectionMenu, "Right")
 			for i=table.maxn(spellTable)-1,0,-1 do
 				if replayTexture[i] == nil then
 					break
@@ -317,11 +306,7 @@ UIDropDownMenu_Initialize(SettingsDirectionMenu, function()
 	directionInitMenu.func = function()
 		if replaySavedSettings ~= nil and replaySavedSettings[15] ~= 2 then
 			replaySavedSettings[15] = 2
-			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
-				UIDropDownMenu_SetText(SettingsDirectionMenu, "Left")
-			else
-				UIDropDownMenu_SetText("Left", SettingsDirectionMenu)
-			end
+			UIDropDownMenu_SetText(SettingsDirectionMenu, "Left")
 			for i=table.maxn(spellTable)-1,0,-1 do
 				if replayTexture[i] == nil then
 					break
@@ -679,12 +664,7 @@ local SettingsListBorder = CreateFrame("Frame", "SettingsListBorder", ReplaySett
 SettingsListBorder:SetPoint("TOPLEFT", ReplaySettingsResistsPanel, 80, -150)
 SettingsListBorder:SetWidth(160)
 SettingsListBorder:SetHeight(150)
-SettingsListBorder:SetBackdrop({
-	edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-	tile = false,
-	edgeSize = 16,
-	insets = { left = 3, right = 3, top = 3, bottom = 3 }
-})
+
 
 local SettingsListFrame = CreateFrame("Frame", nil, SettingsListBorder)
 SettingsListFrame:SetPoint("CENTER")
@@ -695,7 +675,7 @@ local SettingsListTexture = SettingsListFrame:CreateTexture()
 SettingsListTexture:SetWidth(156)
 SettingsListTexture:SetHeight(146)
 SettingsListTexture:SetPoint("CENTER")
-SettingsListTexture:SetTexture(0, 0, 0, 0.5)
+SettingsListTexture:SetColorTexture(0, 0, 0, 0.5)
 
 local SettingsListScrollFrame = CreateFrame("ScrollFrame", "SettingsListScrollFrame", SettingsListFrame)
 SettingsListScrollFrame:SetPoint("TOPLEFT", 4, -5)
@@ -728,18 +708,16 @@ end)
 SettingsListScrollFrameScrollUpButton:Disable()
 SettingsListScrollFrameScrollUpButton:SetScript("OnClick", function()
 	SettingsListScrollBar:SetValue(SettingsListScrollBar:GetValue() - 20)
-	PlaySound("UChatScrollButton")
 end)
 SettingsListScrollFrameScrollDownButton:Disable()
 SettingsListScrollFrameScrollDownButton:SetScript("OnClick", function()
 	SettingsListScrollBar:SetValue(SettingsListScrollBar:GetValue() + 20)
-	PlaySound("UChatScrollButton")
 end)
 SettingsListScrollFrame.SettingsListScrollBar = SettingsListScrollBar
 
 local SettingsListScrollBarBackground = SettingsListScrollBar:CreateTexture(nil,"BACKGROUND")
 SettingsListScrollBarBackground:SetAllPoints()
-SettingsListScrollBarBackground:SetTexture(0,0,0,0.6)
+SettingsListScrollBarBackground:SetColorTexture(0,0,0,0.6)
 
 local SettingsListContentFrame = CreateFrame("Frame", nil, SettingsListScrollFrame)
 SettingsListContentFrame:SetWidth(160)
@@ -1268,7 +1246,7 @@ SettingsPetSpellsFont:SetFont("Fonts\\FRIZQT__.TTF", 13)
 SettingsPetSpellsFont:SetTextColor(1, 1, 1)
 SettingsPetSpellsFont:SetText("Display pet spells")
 
---
+-- RESET DIALOGUE
 
 StaticPopupDialogs["REPLAYRESET_POPUP"] = {
 	text = "",
@@ -1298,11 +1276,7 @@ StaticPopupDialogs["REPLAYRESET_POPUP"] = {
 			SettingsScalingSlider:SetValue(2)
 			ReplayFrame:SetScale(1)
 			replaySavedSettings[15] = 1
-			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
-				UIDropDownMenu_SetText(SettingsDirectionMenu, "Right")
-			else
-				UIDropDownMenu_SetText("Right", SettingsDirectionMenu)
-			end
+			UIDropDownMenu_SetText(SettingsDirectionMenu, "Right")
 			for i=table.maxn(spellTable)-1,0,-1 do
 				if replayTexture[i] ~= nil then
 					replayTexture[i]:Hide()
@@ -1472,11 +1446,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			replaySavedSettings[14] = 1
 			SettingsScalingSlider:SetValue(2)
 			replaySavedSettings[15] = 1
-			if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
-				UIDropDownMenu_SetText(SettingsDirectionMenu, "Right")
-			else
-				UIDropDownMenu_SetText("Right", SettingsDirectionMenu)
-			end
+			UIDropDownMenu_SetText(SettingsDirectionMenu, "Right")
 			replaySavedSettings[16] = 1
 			SettingsCropTexButton:SetChecked(true)
 			replaySavedSettings[17] = 100
@@ -1529,17 +1499,9 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			ReplayFrame:SetScale(replaySavedSettings[14]) -- Frame scaling (0.8 - 1.5)
 			SettingsScalingSlider:SetValue((replaySavedSettings[14] - 0.8) * 10)
 			if replaySavedSettings[15] == 1 or replaySavedSettings[15] == nil then -- Scrolling direction (Right/Left)
-				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
-					UIDropDownMenu_SetText(SettingsDirectionMenu, "Right")
-				else
-					UIDropDownMenu_SetText("Right", SettingsDirectionMenu)
-				end
+				UIDropDownMenu_SetText(SettingsDirectionMenu, "Right")
 			else
-				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 then
-					UIDropDownMenu_SetText(SettingsDirectionMenu, "Left")
-				else
-					UIDropDownMenu_SetText("Left", SettingsDirectionMenu)
-				end
+				UIDropDownMenu_SetText(SettingsDirectionMenu, "Left")
 			end
 			if replaySavedSettings[16] == 1 then -- Crop spell borders (on/off)
 				SettingsCropTexButton:SetChecked(true)
@@ -1573,12 +1535,13 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				SettingsResistsOnPartyFont:SetTextColor(0.5, 0.5, 0.5)
 				DisplayToPartyAddButton:Disable()
 				DisplayToPartyDelButton:Disable()
-				for i,value in pairs(displayToPartyTable) do
-					if _G["SettingsListContentButton"..i] ~= nil then
-						_G["SettingsListContentButton"..i]:SetTextColor(0.5, 0.5, 0.5)
-						_G["SettingsListContentButton"..i]:Disable()
-					end
-				end
+				-- TODO: this part throws error
+				--for i,value in pairs(displayToPartyTable) do
+				--	if _G["SettingsListContentButton"..i] ~= nil then
+				--		_G["SettingsListContentButton"..i]:SetTextColor(0.5, 0.5, 0.5)
+				--		_G["SettingsListContentButton"..i]:Disable()
+				--	end
+				--end
 			end
 			if replaySavedSettings[22] == 1 then -- Display resists on the frame (on/off)
 				SettingsResistsOnFrameButton:SetChecked(true)
@@ -1591,12 +1554,13 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			else
 				DisplayToPartyAddButton:Disable()
 				DisplayToPartyDelButton:Disable()
-				for i,value in pairs(displayToPartyTable) do
-					if _G["SettingsListContentButton"..i] ~= nil then
-						_G["SettingsListContentButton"..i]:SetTextColor(0.5, 0.5, 0.5)
-						_G["SettingsListContentButton"..i]:Disable()
-					end
-				end
+				-- TODO: this part throws error
+				--for i,value in pairs(displayToPartyTable) do
+				--	if _G["SettingsListContentButton"..i] ~= nil then
+				--		_G["SettingsListContentButton"..i]:SetTextColor(0.5, 0.5, 0.5)
+				--		_G["SettingsListContentButton"..i]:Disable()
+				--	end
+				--end
 			end
 			if replaySavedSettings[31] == 0 then -- Display spell ranks (none/all/rank one)
 				SettingsAllRanksButton:SetChecked(true)
@@ -1671,9 +1635,10 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 
 
 
-	if event == "UNIT_SPELLCAST_SUCCEEDED" and arg1 == "player" and arg2 ~= "Attack" and arg2 ~= "Throw" and arg2 ~= "Shoot" and arg2 ~= "Auto Shot" and arg2 ~= "Combat Swap (DND)" then
-		local spellName = arg2
-		local spellRank = arg3
+
+	if event == "UNIT_SPELLCAST_SUCCEEDED" and select(1,...) == "player" and select(3,...) ~= "Attack" and select(3,...) ~= "Throw" and select(3,...) ~= "Shoot" and select(3,...) ~= "Auto Shot" and select(3,...) ~= "Combat Swap (DND)" then
+		local spellName = GetSpellInfo(select(3,...))
+		local spellRank = GetSpellSubtext(select(3,...))
 		if table.maxn(spellTable) == 0 then
 			replayTexture[0] = ReplayFrame:CreateTexture(nil, "ARTWORK")
 			replayTexture[0]:SetPoint("TOPLEFT", 0, 0)
@@ -1763,7 +1728,9 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 
 
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-		local _, eventType, sourceGUID, spellCaster, _, _, _, _, spellID = ...
+		-- arg12: spellID or misstype
+		-- arg13: spellname
+		local _, eventType, _, sourceGUID, spellCaster, _, _, _, _, spellID, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23 = CombatLogGetCurrentEventInfo()
 		if sourceGUID == UnitGUID("pet") and replaySavedSettings[36] == 1 or eventType == "SPELL_AURA_APPLIED" and arg10 == "Seduction" and UnitChannelInfo("pet") and strfind(select(4, UnitChannelInfo("pet")), "Spell_Shadow_MindSteal") then -- pet spells
 			if (eventType == "SPELL_DAMAGE" or eventType == "SPELL_MISSED") and select(2, UnitClass("player")) == "MAGE" or eventType == "SPELL_CAST_SUCCESS" and select(2, UnitClass("player")) ~= "MAGE" or eventType == "SPELL_AURA_APPLIED" and arg10 == "Seduction" and sourceGUID == "0x0000000000000000" then
 				local spellName = GetSpellInfo(spellID)
@@ -2071,9 +2038,9 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				if eventType == "RANGE_MISSED" then
 					replayFont[i]:SetText("|cffffa500"..arg12)
 				else
-					replayFont[i]:SetText("|cffffa500"..arg9)
+					replayFont[i]:SetText("|cffffa500"..arg12)
 				end
-			elseif eventType == "SWING_DAMAGE" and arg9 ~= nil and replayDamage[i] == nil and replayTexture[i] ~= nil and replaySavedSettings[33] ~= 0 then
+			elseif eventType == "SWING_DAMAGE" and arg12 ~= nil and replayDamage[i] == nil and replayTexture[i] ~= nil and replaySavedSettings[33] ~= 0 then
 				replayDamage[i] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 				replayDamage[i]:SetPoint("CENTER", replayTexture[i], 0, -25)
 				replayDamage[i]:SetJustifyH("CENTER")
@@ -2083,10 +2050,10 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg15 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg14 == 1 then
 					replayDamage[i]:SetPoint("CENTER", replayTexture[i], 0, -26)
 					replayDamage[i]:SetFont("Fonts\\FRIZQT__.TTF", 12)
-					replayDamage[i]:SetText("|cffffffff"..arg9)
+					replayDamage[i]:SetText("|cffffffff"..arg12)
 				elseif replaySavedSettings[33] ~= 2 then
 					replayDamage[i]:SetFont("Fonts\\FRIZQT__.TTF", 9)
-					replayDamage[i]:SetText("|cffffffff"..arg9)
+					replayDamage[i]:SetText("|cffffffff"..arg12)
 				end
 			elseif eventType == "RANGE_DAMAGE" and arg12 ~= nil and replayDamage[i] == nil and replayTexture[i] ~= nil and replaySavedSettings[33] ~= 0 then
 				replayDamage[i] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -2107,7 +2074,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 		end
 		if spellCaster == UnitName("player") and (eventType == "SPELL_DAMAGE" and replaySavedSettings[33] ~= 0 or eventType == "SPELL_HEAL" and replaySavedSettings[34] ~= 0) and spellID ~= 16666 and spellID ~= 33778 then -- damages/heals on spells
 			for i=table.maxn(spellTable),0,-1 do
-				if arg10 == spellTable[i] and replayTexture[i-1] ~= nil and replayDamage[i-1] == nil and replayFont[i-1] == nil and (arg10 ~= spellTable[i-1] or replayTexture[i-2] == nil or replayTexture[i-2] ~= nil and (replayDamage[i-2] ~= nil or replayFont[i-2] ~= nil)) then
+				if arg13 == spellTable[i] and replayTexture[i-1] ~= nil and replayDamage[i-1] == nil and replayFont[i-1] == nil and (arg13 ~= spellTable[i-1] or replayTexture[i-2] == nil or replayTexture[i-2] ~= nil and (replayDamage[i-2] ~= nil or replayFont[i-2] ~= nil)) then
 					replayDamage[i-1] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 					replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -25)
 					replayDamage[i-1]:SetJustifyH("CENTER")
@@ -2118,19 +2085,19 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 						if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg18 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg17 == 1 then
 							replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
 							replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 12)
-							replayDamage[i-1]:SetText("|cffffff00"..arg12)
+							replayDamage[i-1]:SetText("|cffffff00"..arg15)
 						elseif replaySavedSettings[33] ~= 2 then
 							replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 9)
-							replayDamage[i-1]:SetText("|cffffff00"..arg12)
+							replayDamage[i-1]:SetText("|cffffff00"..arg15)
 						end
 					else
 						if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg15 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg13 ~= nil and arg13 == 1 then
 							replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
 							replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 12)
-							replayDamage[i-1]:SetText("|cff00b200+"..arg12)
+							replayDamage[i-1]:SetText("|cff00b200+"..arg15)
 						elseif replaySavedSettings[34] ~= 2 then
 							replayDamage[i-1]:SetFont("Fonts\\FRIZQT__.TTF", 9)
-							replayDamage[i-1]:SetText("|cff00b200+"..arg12)
+							replayDamage[i-1]:SetText("|cff00b200+"..arg15)
 						end
 					end
 					break
@@ -2187,7 +2154,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				end
 			end
 		end
-		if arg10 ~= nil and strfind(arg10, "Poison") then -- Poisons applied by Shiv
+		if arg13 ~= nil and strfind(tostring(arg13), "Poison") then -- Poisons applied by Shiv
 			i = table.maxn(spellTable) - 1
 			if replayTexture[i] ~= nil and replayUpperTexture[i] == nil and select(3, GetSpellInfo(5940)) == replayTexture[i]:GetTexture() and GetTime() - timestampTable[table.maxn(timestampTable)] < 0.03 then
 				if eventType == "SPELL_MISSED" and arg12 ~= "ABSORB" then
@@ -2195,7 +2162,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 					replayUpperTexture[i]:SetPoint("CENTER", replayTexture[i], 0, 35)
 					replayUpperTexture[i]:SetWidth(25)
 					replayUpperTexture[i]:SetHeight(25)
-					replayUpperTexture[i]:SetTexture(select(3, GetSpellInfo(spellID)))
+					replayUpperTexture[i]:SetTexture(select(3, GetSpellInfo(arg12)))
 					replayUpperFailTexture[i] = ReplayFrame:CreateTexture(nil, "OVERLAY")
 					replayUpperFailTexture[i]:SetPoint("CENTER", replayTexture[i], 0, 35)
 					replayUpperFailTexture[i]:SetWidth(22)
@@ -2210,7 +2177,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 					replayUpperTexture[i]:SetPoint("CENTER", replayTexture[i], 0, 35)
 					replayUpperTexture[i]:SetWidth(25)
 					replayUpperTexture[i]:SetHeight(25)
-					replayUpperTexture[i]:SetTexture(select(3, GetSpellInfo(spellID)))
+					replayUpperTexture[i]:SetTexture(select(3, GetSpellInfo(arg12)))
 					if replaySavedSettings[15] == 1 and select(4, replayTexture[i]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i]:GetPoint()) > 0 then
 						replayUpperTexture[i]:Hide()
 					end
