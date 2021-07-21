@@ -1498,27 +1498,9 @@ ReplayFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 ReplayFrame:RegisterEvent("PLAYER_LOGIN")
 ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 	if event == "PLAYER_LOGIN" then
-		if replaySavedSettings[25] == nil then
-			replaySavedSettings[25] = "Arial Narrow"
-		end
-		local raid_opts = {
-			['name']='font',
-			['parent']=ReplaySettingsGeneralPanel,
-			['title']='Font Selection',
-			['items']= newFonts,
-			['defaultVal']=replaySavedSettings[25], 
-			['changeFunc']=function(dropdown_frame, dropdown_val)
-				replaySavedSettings[25] = dropdown_val -- Custom logic goes here, when you change your dropdown option.
-			end
-		}
-		
-		fontDD = createDropdown(raid_opts)
-		-- Don't forget to set your dropdown's points, we don't do this in the creation method for simplicities sake.
-		fontDD:SetPoint("TOPLEFT", ReplaySettingsGeneralPanel, 180, -240);
-		systemFont = replaySavedSettings[25]
-	
 		if replaySavedSettings == nil or replaySavedSettings[1] ~= nil then
 			replaySavedSettings = {}
+			replaySavedSettings[25] = "Arial Narrow"
 			replaySavedSettings[11] = 1
 			SettingsEnableButton:SetChecked(true)
 			replaySavedSettings[12] = 0
@@ -1711,6 +1693,21 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 		else
 			DisplayToPartyListing()
 		end
+		local raid_opts = {
+			['name']='font',
+			['parent']=ReplaySettingsGeneralPanel,
+			['title']='Font Selection',
+			['items']= newFonts,
+			['defaultVal']=replaySavedSettings[25], 
+			['changeFunc']=function(dropdown_frame, dropdown_val)
+				replaySavedSettings[25] = dropdown_val -- Custom logic goes here, when you change your dropdown option.
+			end
+		}
+		
+		fontDD = createDropdown(raid_opts)
+		-- Don't forget to set your dropdown's points, we don't do this in the creation method for simplicities sake.
+		fontDD:SetPoint("TOPLEFT", ReplaySettingsGeneralPanel, 180, -240);
+		systemFont = replaySavedSettings[25]
 		ReplayFrame:UnregisterEvent("PLAYER_LOGIN")
 	end
 
