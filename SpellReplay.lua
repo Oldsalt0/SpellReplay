@@ -1755,14 +1755,15 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 		end
 		if table.maxn(spellTable) > 0 and replayTexture[table.maxn(spellTable) - 1]:GetTexture() == nil then
 			local i = table.maxn(spellTable) - 1
+			spellID = select(3,...)
 			if spellName == GetSpellInfo(42292) then -- PvP trinket
 				if UnitFactionGroup("player") == "Alliance" then
 					replayTexture[i]:SetTexture("Interface\\Icons\\INV_Jewelry_TrinketPVP_01")
 				else
 					replayTexture[i]:SetTexture("Interface\\Icons\\INV_Jewelry_TrinketPVP_02")
 				end
-			elseif select(3, GetSpellInfo(spellName)) ~= nil then
-				replayTexture[i]:SetTexture(select(3, GetSpellInfo(spellName)))
+			elseif spellID ~= nil and spellID ~= 836 then
+				replayTexture[i]:SetTexture(select(3, GetSpellInfo(spellID)))
 			elseif select(10, GetItemInfo(spellName)) ~= nil then
 				replayTexture[i]:SetTexture(select(10, GetItemInfo(spellName)))
 			elseif spellName == GetSpellInfo(770) or spellName == GetSpellInfo(16857) then -- Faerie fire
@@ -2265,7 +2266,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 		elseif replaySavedSettings[21] == 1 and eventType == "SPELL_MISSED" and spellCaster == UnitName("player") and arg12 ~= "ABSORB" then -- Other missed spells
 			if replaySavedSettings[22] == 1 and (spellID ~= 64382 or arg12 ~= "IMMUNE" and spellID == 64382) then -- not Shattering Throw immunes (WotLK)
 				for i=table.maxn(spellTable),0,-1 do
-					if replayTexture[i] ~= nil and replayFont[i] == nil and select(3, GetSpellInfo(spellID)) == replayTexture[i]:GetTexture() and (GetTime() - timestampTable[i+1] < 1 or strfind(arg10, "Effect") and GetTime() - timestampTable[i+1] < 1.5) then
+					if replayTexture[i] ~= nil and replayFont[i] == nil and select(3, GetSpellInfo(spellID)) == replayTexture[i]:GetTexture() and (GetTime() - timestampTable[i+1] < 1 or strfind(tostring(arg13), "Effect") and GetTime() - timestampTable[i+1] < 1.5) then
 						replayFailTexture[i] = ReplayFrame:CreateTexture(nil, "OVERLAY")
 						replayFailTexture[i]:SetPoint("CENTER", replayTexture[i])
 						replayFailTexture[i]:SetWidth(35)
