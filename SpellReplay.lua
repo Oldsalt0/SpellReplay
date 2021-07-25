@@ -2269,8 +2269,8 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 					end
 				end
 			end
-		elseif replaySavedSettings[21] == 1 and eventType == "SPELL_MISSED" and spellCaster == UnitName("player") and arg12 ~= "ABSORB" then -- Other missed spells
-			if replaySavedSettings[22] == 1 and (spellID ~= 64382 or arg12 ~= "IMMUNE" and spellID == 64382) then -- not Shattering Throw immunes (WotLK)
+		elseif replaySavedSettings[21] == 1 and eventType == "SPELL_MISSED" and spellCaster == UnitName("player") and arg15 ~= "ABSORB" then -- Other missed spells
+			if replaySavedSettings[22] == 1 and (spellID ~= 64382 or arg15 ~= "IMMUNE" and spellID == 64382) then -- not Shattering Throw immunes (WotLK)
 				for i=table.maxn(spellTable),0,-1 do
 					if replayTexture[i] ~= nil and replayFont[i] == nil and select(3, GetSpellInfo(spellID)) == replayTexture[i]:GetTexture() and (GetTime() - timestampTable[i+1] < 1 or strfind(tostring(arg13), "Effect") and GetTime() - timestampTable[i+1] < 1.5) then
 						replayFailTexture[i] = ReplayFrame:CreateTexture(nil, "OVERLAY")
@@ -2282,7 +2282,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 						replayFont[i]:SetPoint("CENTER", replayTexture[i], 0, -26)
 						replayFont[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 8)
 						replayFont[i]:SetJustifyH("CENTER")
-						replayFont[i]:SetText("|cffffa500"..arg12)
+						replayFont[i]:SetText("|cffffa500"..arg15)
 						if replaySavedSettings[15] == 1 and select(4, replayTexture[i]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i]:GetPoint()) > 0 then
 							replayFailTexture[i]:Hide()
 							replayFont[i]:Hide()
