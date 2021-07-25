@@ -1809,7 +1809,8 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		-- arg12: spellID or misstype
 		-- arg13: spellname
-		local _, eventType, _, sourceGUID, spellCaster, _, _, _, _, spellID, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23 = CombatLogGetCurrentEventInfo()
+		local _, eventType, _, sourceGUID, spellCaster, _, _, _, destName, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23 = CombatLogGetCurrentEventInfo()
+		spellID = arg12
 		if sourceGUID == UnitGUID("pet") and replaySavedSettings[36] == 1 or eventType == "SPELL_AURA_APPLIED" and arg10 == "Seduction" and UnitChannelInfo("pet") and strfind(select(4, UnitChannelInfo("pet")), "Spell_Shadow_MindSteal") then -- pet spells
 			if (eventType == "SPELL_DAMAGE" or eventType == "SPELL_MISSED") and select(2, UnitClass("player")) == "MAGE" or eventType == "SPELL_CAST_SUCCESS" and select(2, UnitClass("player")) ~= "MAGE" or eventType == "SPELL_AURA_APPLIED" and arg10 == "Seduction" and sourceGUID == "0x0000000000000000" then
 				spellID = arg12
