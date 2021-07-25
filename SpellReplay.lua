@@ -2008,7 +2008,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 							break
 						end
 					end
-				elseif eventType == "SPELL_MISSED" and arg12 ~= "ABSORB" then
+				elseif eventType == "SPELL_MISSED" and arg15 ~= "ABSORB" then
 					if replaySavedSettings[21] == 1 then
 						for i=table.maxn(spellTable),0,-1 do
 							if replayTexture[i-1] ~= nil and select(3, GetSpellInfo(spellID)) == replayTexture[i-1]:GetTexture() and replayDamage[i-1] == nil and replayFont[i-1] == nil then
@@ -2021,7 +2021,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 								replayFont[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
 								replayFont[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 8)
 								replayFont[i-1]:SetJustifyH("CENTER")
-								replayFont[i-1]:SetText("|cffffa500"..arg12)
+								replayFont[i-1]:SetText("|cffffa500"..arg15)
 								if replaySavedSettings[15] == 1 and select(4, replayTexture[i-1]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i-1]:GetPoint()) > 0 then
 									replayFailTexture[i-1]:Hide()
 									replayFont[i-1]:Hide()
