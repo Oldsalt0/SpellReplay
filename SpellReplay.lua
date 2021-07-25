@@ -1714,7 +1714,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 
 
 
-	if event == "UNIT_SPELLCAST_SUCCEEDED" and select(1,...) == "player" and select(3,...) ~= "Attack" and select(3,...) ~= "Throw" and select(3,...) ~= "Shoot" and select(3,...) ~= "Auto Shot" and select(3,...) ~= "Combat Swap (DND)" then
+	if event == "UNIT_SPELLCAST_SUCCEEDED" and select(1,...) == "player" and GetSpellInfo(select(3,...)) ~= "Attack" and GetSpellInfo(select(3,...)) ~= "Throw" and GetSpellInfo(select(3,...)) ~= "Shoot" and GetSpellInfo(select(3,...)) ~= "Auto Shot" and GetSpellInfo(select(3,...)) ~= "Combat Swap (DND)" then
 		local spellName = GetSpellInfo(select(3,...))
 		local spellRank = GetSpellSubtext(select(3,...))
 		if table.maxn(spellTable) == 0 then
@@ -1762,7 +1762,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				else
 					replayTexture[i]:SetTexture("Interface\\Icons\\INV_Jewelry_TrinketPVP_02")
 				end
-			elseif spellID ~= nil and spellID ~= 836 then
+			elseif spellID ~= nil and spellID ~= 836 then -- Don't trigger on "LOGINEFFECT"
 				replayTexture[i]:SetTexture(select(3, GetSpellInfo(spellID)))
 			elseif select(10, GetItemInfo(spellName)) ~= nil then
 				replayTexture[i]:SetTexture(select(10, GetItemInfo(spellName)))
@@ -2116,11 +2116,11 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 					replayFont[i]:Hide()
 				end
 				if eventType == "RANGE_MISSED" then
-					replayFont[i]:SetText("|cffffa500"..arg12)
+					replayFont[i]:SetText("|cffffa500"..arg15)
 				else
-					replayFont[i]:SetText("|cffffa500"..arg12)
+					replayFont[i]:SetText("|cffffa500"..arg15)
 				end
-			elseif eventType == "SWING_DAMAGE" and arg12 ~= nil and replayDamage[i] == nil and replayTexture[i] ~= nil and replaySavedSettings[33] ~= 0 then
+			elseif eventType == "SWING_DAMAGE" and arg15 ~= nil and replayDamage[i] == nil and replayTexture[i] ~= nil and replaySavedSettings[33] ~= 0 then
 				replayDamage[i] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 				replayDamage[i]:SetPoint("CENTER", replayTexture[i], 0, -25)
 				replayDamage[i]:SetJustifyH("CENTER")
@@ -2130,31 +2130,36 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg15 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg14 == 1 then
 					replayDamage[i]:SetPoint("CENTER", replayTexture[i], 0, -26)
 					replayDamage[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 12)
-					replayDamage[i]:SetText("|cffffffff"..arg12)
+					replayDamage[i]:SetText("|cffffffff"..arg15)
 				elseif replaySavedSettings[33] ~= 2 then
 					replayDamage[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
-					replayDamage[i]:SetText("|cffffffff"..arg12)
+					replayDamage[i]:SetText("|cffffffff"..arg15)
 				end
-			elseif eventType == "RANGE_DAMAGE" and arg12 ~= nil and replayDamage[i] == nil and replayTexture[i] ~= nil and replaySavedSettings[33] ~= 0 then
+			elseif eventType == "RANGE_DAMAGE" and arg15 ~= nil and replayDamage[i] == nil and replayTexture[i] ~= nil and replaySavedSettings[33] ~= 0 then
 				replayDamage[i] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 				replayDamage[i]:SetPoint("CENTER", replayTexture[i], 0, -25)
 				replayDamage[i]:SetJustifyH("CENTER")
 				if replaySavedSettings[15] == 1 and select(4, replayTexture[i]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i]:GetPoint()) > 0 then
 					replayDamage[i]:Hide()
 				end
-				if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg18 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg17 == 1 then
+				_critical = arg21
+				if _critical == true then
 					replayDamage[i]:SetPoint("CENTER", replayTexture[i], 0, -26)
 					replayDamage[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 12)
-					replayDamage[i]:SetText("|cffffffff"..arg12)
+					replayDamage[i]:SetText("|cffffffff"..arg15)
 				elseif replaySavedSettings[33] ~= 2 then
 					replayDamage[i]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
-					replayDamage[i]:SetText("|cffffffff"..arg12)
+					replayDamage[i]:SetText("|cffffffff"..arg15)
 				end
 			end
 		end
 		if spellCaster == UnitName("player") and (eventType == "SPELL_DAMAGE" and replaySavedSettings[33] ~= 0 or eventType == "SPELL_HEAL" and replaySavedSettings[34] ~= 0) and spellID ~= 16666 and spellID ~= 33778 then -- damages/heals on spells
+			_spellID = arg12
+			_spellName = arg13
+			_spellAmount = arg15
+			_spellCritical = arg21
 			for i=table.maxn(spellTable),0,-1 do
-				if arg13 == spellTable[i] and replayTexture[i-1] ~= nil and replayDamage[i-1] == nil and replayFont[i-1] == nil and (arg13 ~= spellTable[i-1] or replayTexture[i-2] == nil or replayTexture[i-2] ~= nil and (replayDamage[i-2] ~= nil or replayFont[i-2] ~= nil)) then
+				if _spellName == spellTable[i] and replayTexture[i-1] ~= nil and replayDamage[i-1] == nil and replayFont[i-1] == nil and (_spellName ~= spellTable[i-1] or replayTexture[i-2] == nil or replayTexture[i-2] ~= nil and (replayDamage[i-2] ~= nil or replayFont[i-2] ~= nil)) then
 					replayDamage[i-1] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 					replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -25)
 					replayDamage[i-1]:SetJustifyH("CENTER")
@@ -2162,22 +2167,23 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 						replayDamage[i-1]:Hide()
 					end
 					if eventType == "SPELL_DAMAGE" then
-						if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg18 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg17 == 1 then
+						if _spellCritical == true then
 							replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
 							replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 12)
-							replayDamage[i-1]:SetText("|cffffff00"..arg15)
+							replayDamage[i-1]:SetText("|cffffff00".._spellAmount)
 						elseif replaySavedSettings[33] ~= 2 then
-							replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
-							replayDamage[i-1]:SetText("|cffffff00"..arg15)
+							replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 10)
+							replayDamage[i-1]:SetText("|cffffff00".._spellAmount)
 						end
 					else
-						if tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) > 2 and arg15 == 1 or tonumber(strsub(select(1,GetBuildInfo()), 1, 1)) <= 2 and arg13 ~= nil and arg13 == 1 then
+						_spellCritical = arg18
+						if _spellCritical == true then
 							replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -26)
 							replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 12)
-							replayDamage[i-1]:SetText("|cff00b200+"..arg15)
+							replayDamage[i-1]:SetText("|cff00b200+".._spellAmount)
 						elseif replaySavedSettings[34] ~= 2 then
-							replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 9)
-							replayDamage[i-1]:SetText("|cff00b200+"..arg15)
+							replayDamage[i-1]:SetFont(LibSharedMedia:Fetch("font", systemFont), 10)
+							replayDamage[i-1]:SetText("|cff00b200+".._spellAmount)
 						end
 					end
 					break
