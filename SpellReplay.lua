@@ -1,4 +1,4 @@
-﻿-- SpellReplay (TBC Classic)
+-- SpellReplay (TBC Classic)
 local LibSharedMedia = LibStub("LibSharedMedia-3.0")
 local ReplayFrame = CreateFrame("Frame", "ReplayFrame", UIParent)
 ReplayFrame:SetPoint("CENTER")
@@ -2203,14 +2203,14 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				end
 			end
 		end
-		if arg12 == "REFLECT" and arg7 == UnitName("player") then -- Shield Reflect
+		if arg15 == "REFLECT" and destName == UnitName("player") then -- Shield Reflect
 			for i=table.maxn(spellTable),0,-1 do
 				if replayTexture[i] ~= nil and replayUpperTexture[i] == nil and select(3, GetSpellInfo(23920)) == replayTexture[i]:GetTexture() then
 					replayUpperTexture[i] = ReplayFrame:CreateTexture(nil)
 					replayUpperTexture[i]:SetPoint("CENTER", replayTexture[i], 0, 35)
 					replayUpperTexture[i]:SetWidth(25)
 					replayUpperTexture[i]:SetHeight(25)
-					replayUpperTexture[i]:SetTexture(select(3, GetSpellInfo(spellID)))
+					replayUpperTexture[i]:SetTexture(select(3, GetSpellInfo(arg12)))
 					if replaySavedSettings[15] == 1 and select(4, replayTexture[i]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i]:GetPoint()) > 0 then
 						replayUpperTexture[i]:Hide()
 					end
@@ -2218,7 +2218,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				end
 			end
 		end
-		if arg12 == "RESIST" and arg7 == UnitName("player") then -- Cloak of Shadows first resist
+		if arg15 == "RESIST" and destName == UnitName("player") then -- Cloak of Shadows first resist
 			for i=1,40 do
 				if select(1, UnitBuff("player", i)) ~= nil then
 					local spellName = UnitBuff("player", i)
@@ -2229,7 +2229,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 								replayUpperTexture[i]:SetPoint("CENTER", replayTexture[i], 0, 35)
 								replayUpperTexture[i]:SetWidth(25)
 								replayUpperTexture[i]:SetHeight(25)
-								replayUpperTexture[i]:SetTexture(select(3, GetSpellInfo(spellID)))
+								replayUpperTexture[i]:SetTexture(select(3, GetSpellInfo(arg12)))
 								if replaySavedSettings[15] == 1 and select(4, replayTexture[i]:GetPoint()) < 0 or replaySavedSettings[15] == 2 and select(4, replayTexture[i]:GetPoint()) > 0 then
 									replayUpperTexture[i]:Hide()
 								end
