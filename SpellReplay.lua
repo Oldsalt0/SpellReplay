@@ -1762,7 +1762,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				else
 					replayTexture[i]:SetTexture("Interface\\Icons\\INV_Jewelry_TrinketPVP_02")
 				end
-			elseif spellID ~= nil and spellID ~= 836 then -- Don't trigger on "LOGINEFFECT"
+			elseif spellID ~= nil and spellID ~= 836 and spellID ~= 7266 then -- Don't trigger on "LOGINEFFECT" or "Duel" buffs
 				replayTexture[i]:SetTexture(select(3, GetSpellInfo(spellID)))
 			elseif select(10, GetItemInfo(spellName)) ~= nil then
 				replayTexture[i]:SetTexture(select(10, GetItemInfo(spellName)))
@@ -1913,12 +1913,12 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 						end
 					end
 					if replaySavedSettings[23] == 1 then
-						DEFAULT_CHAT_FRAME:AddMessage("|cffffa500"..arg10.." failed ("..arg12..")")
+						DEFAULT_CHAT_FRAME:AddMessage("|cffffa500"..arg13.." failed ("..arg15..")")
 					end
 					if replaySavedSettings[24] == 1 and displayToPartyTable ~= nil then
 						for i,value in pairs(displayToPartyTable) do
-							if arg10 == value then
-								SendChatMessage(arg10.." failed ("..arg12..")", "PARTY")
+							if arg13 == value then
+								SendChatMessage(arg13.." failed ("..arg15..")", "PARTY")
 								return
 							end
 						end
@@ -1950,7 +1950,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 					timestampTable[1] = GetTime()
 				else
 					for i=table.maxn(spellTable),0,-1 do
-						if replayTexture[i-1] ~= nil and select(3, GetSpellInfo(spellID)) == replayTexture[i-1]:GetTexture() and (GetTime() - timestampTable[i] < 1 or strfind(arg10, "Effect") and GetTime() - timestampTable[i] < 1.5) then
+						if replayTexture[i-1] ~= nil and select(3, GetSpellInfo(spellID)) == replayTexture[i-1]:GetTexture() and (GetTime() - timestampTable[i] < 1 or strfind(arg13, "Effect") and GetTime() - timestampTable[i] < 1.5) then
 							break
 						elseif replayTexture[i-1] == nil then
 							local i = table.maxn(spellTable)
@@ -1991,7 +1991,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				end
 				if eventType == "SPELL_DAMAGE" and replaySavedSettings[33] ~= 0 then
 					for i=table.maxn(spellTable),0,-1 do
-						if arg10 == spellTable[i] and replayTexture[i-1] ~= nil and replayDamage[i-1] == nil and replayFont[i-1] == nil then
+						if arg13 == spellTable[i] and replayTexture[i-1] ~= nil and replayDamage[i-1] == nil and replayFont[i-1] == nil then
 							replayDamage[i-1] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 							replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -25)
 							replayDamage[i-1]:SetJustifyH("CENTER")
@@ -2032,12 +2032,12 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 						end
 					end
 					if replaySavedSettings[23] == 1 then
-						DEFAULT_CHAT_FRAME:AddMessage("|cffffa500"..arg10.." failed ("..arg12..")")
+						DEFAULT_CHAT_FRAME:AddMessage("|cffffa500"..arg13.." failed ("..arg15..")")
 					end
 					if replaySavedSettings[24] == 1 and displayToPartyTable ~= nil then
 						for i,value in pairs(displayToPartyTable) do
-							if arg10 == value then
-								SendChatMessage(arg10.." failed ("..arg12..")", "PARTY")
+							if arg13 == value then
+								SendChatMessage(arg13.." failed ("..arg15..")", "PARTY")
 								return
 							end
 						end
@@ -2193,7 +2193,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 		end
 		if eventType == "SPELL_ENERGIZE" and spellCaster == UnitName("player") and arg13 == 0 and replaySavedSettings[35] == 1 then -- mana gains
 			local i = table.maxn(spellTable)
-			if arg10 == spellTable[i] and replayDamage[i-1] == nil and replayTexture[i-1] ~= nil then
+			if arg13 == spellTable[i] and replayDamage[i-1] == nil and replayTexture[i-1] ~= nil then
 				replayDamage[i-1] = ReplayFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 				replayDamage[i-1]:SetPoint("CENTER", replayTexture[i-1], 0, -25)
 				replayDamage[i-1]:SetJustifyH("CENTER")
@@ -2293,12 +2293,12 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				end
 			end
 			if replaySavedSettings[23] == 1 then
-				DEFAULT_CHAT_FRAME:AddMessage("|cffffa500"..arg10.." failed ("..arg12..")") -- chat frame message for failed spells
+				DEFAULT_CHAT_FRAME:AddMessage("|cffffa500"..arg13.." failed ("..arg15..")") -- chat frame message for failed spells
 			end
 			if replaySavedSettings[24] == 1 and displayToPartyTable ~= nil then
 				for i,value in pairs(displayToPartyTable) do
-					if arg10 == value then
-						SendChatMessage(arg10.." failed ("..arg12..")", "PARTY") -- /party message for all the failed spells on displayToPartyTable
+					if arg13 == value then
+						SendChatMessage(arg13.." failed ("..arg15..")", "PARTY") -- /party message for all the failed spells on displayToPartyTable
 						return
 					end
 				end
