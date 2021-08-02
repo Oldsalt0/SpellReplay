@@ -619,7 +619,7 @@ SettingsDisplayResistsButton:SetScript("OnClick", function()
 			for i,value in pairs(displayToPartyTable) do
 				if _G["SettingsListContentButton"..i] ~= nil then
 					_G["SettingsListContentButton"..i]:Enable()
-					_G["SettingsListContentButton"..i]:SetTextColor(1, 1, 1)
+					_G["SettingsListContentFont"..i]:SetTextColor(1, 1, 1)
 				end
 			end
 		end
@@ -635,7 +635,7 @@ SettingsDisplayResistsButton:SetScript("OnClick", function()
 		DisplayToPartyDelButton:Disable()
 		for i,value in pairs(displayToPartyTable) do
 			if _G["SettingsListContentButton"..i] ~= nil then
-				_G["SettingsListContentButton"..i]:SetTextColor(0.5, 0.5, 0.5)
+				_G["SettingsListContentFont"..i]:SetTextColor(0.5, 0.5, 0.5)
 				_G["SettingsListContentButton"..i]:Disable()
 			end
 		end
@@ -699,7 +699,7 @@ SettingsResistsOnPartyButton:SetScript("OnClick", function()
 		for i,value in pairs(displayToPartyTable) do
 			if _G["SettingsListContentButton"..i] ~= nil then
 				_G["SettingsListContentButton"..i]:Enable()
-				_G["SettingsListContentButton"..i]:SetTextColor(1, 1, 1)
+				_G["SettingsListContentFont"..i]:SetTextColor(1, 1, 1)
 			end
 		end
 	else
@@ -708,7 +708,7 @@ SettingsResistsOnPartyButton:SetScript("OnClick", function()
 		DisplayToPartyDelButton:Disable()
 		for i,value in pairs(displayToPartyTable) do
 			if _G["SettingsListContentButton"..i] ~= nil then
-				_G["SettingsListContentButton"..i]:SetTextColor(0.5, 0.5, 0.5)
+				_G["SettingsListContentFont"..i]:SetTextColor(0.5, 0.5, 0.5)
 				_G["SettingsListContentButton"..i]:Disable()
 			end
 		end
@@ -1598,13 +1598,12 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 				SettingsResistsOnPartyFont:SetTextColor(0.5, 0.5, 0.5)
 				DisplayToPartyAddButton:Disable()
 				DisplayToPartyDelButton:Disable()
-				-- TODO: this part throws error
-				--for i,value in pairs(displayToPartyTable) do
-				--	if _G["SettingsListContentButton"..i] ~= nil then
-				--		_G["SettingsListContentButton"..i]:SetTextColor(0.5, 0.5, 0.5)
-				--		_G["SettingsListContentButton"..i]:Disable()
-				--	end
-				--end
+				for i,value in pairs(displayToPartyTable) do
+					if _G["SettingsListContentButton"..i] ~= nil then
+						_G["SettingsListContentFont"..i]:SetTextColor(0.5, 0.5, 0.5)
+						_G["SettingsListContentButton"..i]:Disable()
+					end
+				end
 			end
 			if replaySavedSettings[22] == 1 then -- Display resists on the frame (on/off)
 				SettingsResistsOnFrameButton:SetChecked(true)
@@ -1617,13 +1616,12 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			else
 				DisplayToPartyAddButton:Disable()
 				DisplayToPartyDelButton:Disable()
-				-- TODO: this part throws error
-				--for i,value in pairs(displayToPartyTable) do
-				--	if _G["SettingsListContentButton"..i] ~= nil then
-				--		_G["SettingsListContentButton"..i]:SetTextColor(0.5, 0.5, 0.5)
-				--		_G["SettingsListContentButton"..i]:Disable()
-				--	end
-				--end
+				for i,value in pairs(displayToPartyTable) do
+					if _G["SettingsListContentButton"..i] ~= nil then
+						_G["SettingsListContentFont"..i]:SetTextColor(0.5, 0.5, 0.5)
+						_G["SettingsListContentButton"..i]:Disable()
+					end
+				end
 			end
 			if replaySavedSettings[31] == 0 then -- Display spell ranks (none/all/rank one)
 				SettingsAllRanksButton:SetChecked(true)
