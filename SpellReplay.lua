@@ -2271,7 +2271,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 		elseif replaySavedSettings[21] == 1 and eventType == "SPELL_MISSED" and spellCaster == UnitName("player") and arg15 ~= "ABSORB" then -- Other missed spells
 			if replaySavedSettings[22] == 1 and (spellID ~= 64382 or arg15 ~= "IMMUNE" and spellID == 64382) then -- not Shattering Throw immunes (WotLK)
 				for i=table.maxn(spellTable),0,-1 do
-					if replayTexture[i] ~= nil and replayFont[i] == nil and select(3, GetSpellInfo(spellID)) == replayTexture[i]:GetTexture() and (GetTime() - timestampTable[i+1] < 1 or strfind(tostring(arg13), "Effect") and GetTime() - timestampTable[i+1] < 1.5) then
+					if replayTexture[i] ~= nil and replayFont[i] == nil and select(3, GetSpellInfo(spellID)) == replayTexture[i]:GetTexture() and (GetTime() - timestampTable[i+1] < 1.5 or strfind(tostring(arg13), "Effect") and GetTime() - timestampTable[i+1] < 1.5) then
 						replayFailTexture[i] = ReplayFrame:CreateTexture(nil, "OVERLAY")
 						replayFailTexture[i]:SetPoint("CENTER", replayTexture[i])
 						replayFailTexture[i]:SetWidth(35)
