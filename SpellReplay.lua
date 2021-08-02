@@ -2032,7 +2032,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 					if replaySavedSettings[23] == 1 then
 						DEFAULT_CHAT_FRAME:AddMessage("|cffffa500"..arg13.." failed ("..arg15..")")
 					end
-					if replaySavedSettings[24] == 1 and displayToPartyTable ~= nil then
+					if replaySavedSettings[24] == 1 and displayToPartyTable ~= nil and GetNumGroupMembers() > 0 and GetNumGroupMembers() <= 5 then
 						for i,value in pairs(displayToPartyTable) do
 							if arg13 == value then
 								SendChatMessage(arg13.." failed ("..arg15..")", "PARTY")
@@ -2293,7 +2293,7 @@ ReplayFrame:SetScript("OnEvent", function(self, event, ...)
 			if replaySavedSettings[23] == 1 then
 				DEFAULT_CHAT_FRAME:AddMessage("|cffffa500"..arg13.." failed ("..arg15..")") -- chat frame message for failed spells
 			end
-			if replaySavedSettings[24] == 1 and displayToPartyTable ~= nil then
+			if replaySavedSettings[24] == 1 and displayToPartyTable ~= nil and GetNumGroupMembers() > 0 and GetNumGroupMembers() <= 5 then
 				for i,value in pairs(displayToPartyTable) do
 					if arg13 == value then
 						SendChatMessage(arg13.." failed ("..arg15..")", "PARTY") -- /party message for all the failed spells on displayToPartyTable
